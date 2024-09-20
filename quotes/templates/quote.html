@@ -1,0 +1,10 @@
+<!-- quotes/templates/quotes/quote.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div>
+    <h2>Quote of the Day by Jean-Jacques Rousseau</h2>
+    <p>{{ quote }}</p>
+    <img src="{% static ''|add:image %}" alt="Random Image" />
+</div>
+{% endblock %}

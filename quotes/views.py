@@ -35,14 +35,14 @@ def quote(request):
         'quote': random_quote,
         'image': random_image,
     }
-    return render(request, 'quote.html', context)
+    return render(request, 'quotes/quote.html', context)
 
 def show_all(request):
     context = {
         'quotes': quotes,
         'images': images,
     }
-    return render(request, 'show_all.html', context)
+    return render(request, 'quotes/show_all.html', context)
 
 def about(request):
     context = {
@@ -50,4 +50,4 @@ def about(request):
         'bio': bio,
         'creator': creator,
     }
-    return render(request, 'about.html', context)
+    return render(request, 'quotes/about.html', context)

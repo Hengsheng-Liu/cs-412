@@ -1,0 +1,29 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Welcome to Our Restaurant</h2>
+<p>Location: 123 Main St, Foodtown</p>
+<p>Hours of Operation:</p>
+
+<table>
+    <tr>
+        <th>Day</th>
+        <th>Hours</th>
+    </tr>
+    <tr>
+        <td>Monday - Friday</td>
+        <td>9 AM - 9 PM</td>
+    </tr>
+    <tr>
+        <td>Saturday</td>
+        <td>10 AM - 8 PM</td>
+    </tr>
+    <tr>
+        <td>Sunday</td>
+        <td>Closed</td>
+    </tr>
+</table>
+
+<img src="{% static 'restaurant/restaurant.webp' %}" alt="Restaurant Photo">
+{% endblock %}

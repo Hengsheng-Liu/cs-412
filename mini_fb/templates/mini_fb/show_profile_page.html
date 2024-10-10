@@ -1,0 +1,27 @@
+<!-- mini_fb/templates/mini_fb/show_profile.html -->
+
+{% extends 'mini_fb/base.html' %} {% block content %}
+<div class="profile-container">
+  <div class="profile-card">
+    <img
+      src="{{ profile.profile_image_url }}"
+      alt="{{ profile.first_name }} {{ profile.last_name }}"
+    />
+    <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+    <p>Born : {{ profile.city }}</p>
+    <h2>Status Messages</h2>
+    {% if profile.get_status_messages %}
+    <ul>
+      {% for status in profile.get_status_messages %}
+      <li>
+        <strong>{{ status.timestamp|date:"Y-m-d H:i" }}</strong>: {{ status.message }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No status messages.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

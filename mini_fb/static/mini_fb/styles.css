@@ -121,3 +121,14 @@ nav ul li a:hover {
     color: #ffffff;
     text-decoration: underline;
 }
+.create-profile-container {
+    display: flex;
+
+    justify-content: center;  /* Centers items vertically */
+    min-height: 100vh;        /* Ensures the container fills the viewport height */
+  }
+  
+.textCenter{
+    text-align: center;
+}
+  

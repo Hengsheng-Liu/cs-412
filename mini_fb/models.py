@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
+
 class Profile(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -10,6 +12,8 @@ class Profile(models.Model):
         return f'{self.first_name} {self.last_name}'
     def get_status_messages(self):
         return self.statusmessage_set.all().order_by('-timestamp')
+    def get_absolute_url(self):
+        return reverse('show_profile', kwargs={'pk': self.pk})
 class StatusMessage(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     message = models.TextField()

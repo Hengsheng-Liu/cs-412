@@ -22,7 +22,9 @@
     {% else %}
     <p>No status messages.</p>
     {% endif %}
+    <a href="{% url 'create_status' profile.pk %}">Create a new status</a>
   </div>
+  
 </div>
 
 {% endblock %}

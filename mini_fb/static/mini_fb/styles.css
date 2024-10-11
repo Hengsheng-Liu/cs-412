@@ -124,11 +124,62 @@ nav ul li a:hover {
 .create-profile-container {
     display: flex;
 
-    justify-content: center;  /* Centers items vertically */
-    min-height: 100vh;        /* Ensures the container fills the viewport height */
+    justify-content: center;  
+    min-height: 100vh;        
   }
   
-.textCenter{
+
+.status-message-container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
-  
+
+.status-message-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.status-message-form input[type="text"], 
+.status-message-form textarea {
+    width: 100%;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    
+}
+
+.submit-button {
+    background-color: #4CAF50;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.back-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+

@@ -11,7 +11,7 @@ class ShowAllProfilesView(ListView):
     context_object_name = 'profiles'
 class ShowProfilePageView(DetailView):
     model = Profile
-    template_name = 'mini_fb/show_profile_page.html'
+    template_name = 'mini_fb/show_profile.html'
     context_object_name = 'profile'
 class CreateProfileView(CreateView):
     model = Profile

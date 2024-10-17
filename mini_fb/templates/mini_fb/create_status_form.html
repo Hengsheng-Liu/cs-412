@@ -3,13 +3,17 @@
 {% block content %}
     <div class="status-message-container">
         <h2>Post a Status Message</h2>
-        <form method="post" action="" class="status-message-form">
+        <form method="post" action="" class="status-message-form" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 {{ form.as_p }}
             </div>
+            <input type="file" name = "files" multiple 
+            style="margin: 10px 0;"
+            />
             <button type="submit" class="submit-button">Post</button>
         </form>
+        
         <a href="{% url 'show_profile' profile.pk %}" class="back-link">&larr; Back to Profile</a>
     </div>
 {% endblock %}

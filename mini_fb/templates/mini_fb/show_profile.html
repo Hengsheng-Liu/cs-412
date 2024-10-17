@@ -12,10 +12,22 @@
     <p>Born : {{ profile.city }}</p>
     <h2>Status Messages</h2>
     {% if profile.get_status_messages %}
-    <ul>
+    <ul >
       {% for status in profile.get_status_messages %}
       <li>
         <strong>{{ status.timestamp|date:"Y-m-d H:i" }}</strong>: {{ status.message }}
+        <div class="status">
+          <a href="{% url 'update_status' status.pk %}">Update</a>
+          <a href="{% url 'delete_status' status.pk %}">Delete</a>
+      </div>
+        {% if status.get_images %}
+        <div class="status-images">
+            {% for img in status.get_images %}
+                <img src="{{ img.image.url }}" alt="Status Image" width="150">
+            {% endfor %}
+        </div>
+        {% endif %}
+
       </li>
       {% endfor %}
     </ul>
@@ -23,6 +35,8 @@
     <p>No status messages.</p>
     {% endif %}
     <a href="{% url 'create_status' profile.pk %}">Create a new status</a>
+    <a href="{% url 'update_profile' profile.pk %}" class="update-link">Update Profile</a>
+
   </div>
   
 </div>

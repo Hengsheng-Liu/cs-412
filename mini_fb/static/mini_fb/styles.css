@@ -40,16 +40,7 @@
     justify-content: space-around;
 }
 
-/* Styling for buttons or links */
-.profile-card a {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 10px;
-}
+
 
 .profile-card a:hover {
     background-color: #45a049;
@@ -123,7 +114,6 @@ nav ul li a:hover {
 }
 .create-profile-container {
     display: flex;
-
     justify-content: center;  
     min-height: 100vh;        
   }
@@ -137,6 +127,7 @@ nav ul li a:hover {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    margin-top: 20px;
 }
 
 .status-message-form .form-group {
@@ -169,7 +160,6 @@ nav ul li a:hover {
     background-color: #45a049;
 }
 
-
 .back-link {
     display: inline-block;
     margin-top: 20px;
@@ -181,5 +171,37 @@ nav ul li a:hover {
 .back-link:hover {
     color: #0056b3;
     text-decoration: underline;
+}
+.text-center {
+    text-align: center;
+}
+.UpdateBack-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 14px;
+}
+.profile-card a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.status a {
+    display: inline-block;
+    padding: 5px 5px;
+    background-color: #4e4caf;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.status a:hover {
+    background-color: #2724cb;
 }
 

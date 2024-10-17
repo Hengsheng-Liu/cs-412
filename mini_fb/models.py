@@ -19,5 +19,13 @@ class StatusMessage(models.Model):
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
+
     def __str__(self):
         return f'{self.profile} : {self.message} - {self.timestamp}'
+    
+    def get_images(self):
+        return self.images.all()
+    
+class Image(models.Model):
+    image = models.ImageField(upload_to='images/')
+    status_message = models.ForeignKey(StatusMessage, on_delete=models.CASCADE, related_name='images')

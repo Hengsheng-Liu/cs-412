@@ -2,9 +2,9 @@ from django.views.generic import ListView
 from django.urls import reverse
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
-
-from .models import Profile, StatusMessage
-from .forms import CreateProfileForm, CreateStatusMessageForm
+from django.views.generic import UpdateView, UpdateView, DeleteView
+from .models import Profile, StatusMessage, Image
+from .forms import CreateProfileForm, CreateStatusMessageForm, UpdateProfileForm
 class ShowAllProfilesView(ListView):
     model = Profile
     template_name = 'mini_fb/show_all_profiles.html'
@@ -28,12 +28,46 @@ class CreateStatusMessageView(CreateView):
         return context
 
     def form_valid(self, form):
-        profile = Profile.objects.get(pk=self.kwargs['pk'])
-        form.instance.profile = profile
+        sm = form.save(commit=False)
+        sm.profile = Profile.objects.get(pk=self.kwargs['pk'])
+        sm.save()
+
+        files = self.request.FILES.getlist('files')
+        
+        for file in files:
+
+            image = Image()
+            image.image = file 
+            image.status_message = sm
+            image.save()
+
         return super().form_valid(form)
     
     def get_success_url(self):
-        # Redirect back to the profile page
         return reverse('show_profile', kwargs={'pk': self.kwargs['pk']})
+class UpdateProfileView(UpdateView):
+    model = Profile
+    form_class = UpdateProfileForm
+    template_name = 'mini_fb/update_profile_form.html'
+    def form_valid(self, form):
+        return super().form_valid(form)
+    def get_success_url(self):
+        return reverse('show_profile', kwargs={'pk': self.kwargs['pk']})
+
+
+class DeleteStatusMessageView(DeleteView):
+    model = StatusMessage
+    template_name = 'mini_fb/delete_status_form.html'
+    context_object_name = 'status_message'
+    def get_success_url(self):
+        return reverse('show_profile', kwargs={'pk': self.object.profile.pk})
+class UpdateStatusMessageView(UpdateView):
+    model = StatusMessage
+    template_name = 'mini_fb/update_status_form.html'
+    fields = ['message']
+    context_object_name = 'status_message'
+
+    def get_success_url(self):
+        return reverse('show_profile', kwargs={'pk': self.object.profile.pk})
 
     

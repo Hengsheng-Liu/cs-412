@@ -1,0 +1,13 @@
+{% extends "mini_fb/base.html" %} {% block content %}
+
+<h2 class="text-center">Update Profile</h2>
+<div class="create-profile-container">
+  <form method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" class="submit-button">Save Changes</button>
+    <a href="{% url 'show_profile' profile.pk %}" class="UpdateBack-link ">&larr; Back to Profile</a>
+
+  </form>
+
+</div>
+{% endblock %}

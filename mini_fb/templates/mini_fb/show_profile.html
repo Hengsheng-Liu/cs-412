@@ -1,7 +1,6 @@
 <!-- mini_fb/templates/mini_fb/show_profile.html -->
 
-{% extends 'mini_fb/base.html' %} 
-{% block content %}
+{% extends 'mini_fb/base.html' %} {% block content %}
 <div class="profile-container">
   <div class="profile-card">
     <img
@@ -12,22 +11,21 @@
     <p>Born : {{ profile.city }}</p>
     <h2>Status Messages</h2>
     {% if profile.get_status_messages %}
-    <ul >
+    <ul>
       {% for status in profile.get_status_messages %}
       <li>
-        <strong>{{ status.timestamp|date:"Y-m-d H:i" }}</strong>: {{ status.message }}
+        <strong>{{ status.timestamp|date:"Y-m-d H:i" }}</strong>: {{status.message }}
         <div class="status">
           <a href="{% url 'update_status' status.pk %}">Update</a>
           <a href="{% url 'delete_status' status.pk %}">Delete</a>
-      </div>
+        </div>
         {% if status.get_images %}
         <div class="status-images">
-            {% for img in status.get_images %}
-                <img src="{{ img.image.url }}" alt="Status Image" width="150">
-            {% endfor %}
+          {% for img in status.get_images %}
+          <img src="{{ img.image.url }}" alt="Status Image" width="150" />
+          {% endfor %}
         </div>
         {% endif %}
-
       </li>
       {% endfor %}
     </ul>
@@ -35,10 +33,37 @@
     <p>No status messages.</p>
     {% endif %}
     <a href="{% url 'create_status' profile.pk %}">Create a new status</a>
-    <a href="{% url 'update_profile' profile.pk %}" class="update-link">Update Profile</a>
-
+    <a href="{% url 'update_profile' profile.pk %}" class="update-link"
+      >Update Profile</a
+    >
+    <div class="friends-container">
+      <h2>Friends</h2>
+      <ul class="friends-list">
+        {% for friend in profile.get_friends %}
+        <li class="friend-item">
+          <img
+            class="friend-avatar"
+            src="{{ friend.profile_image_url }}"
+            alt="{{ friend.first_name }}'s profile picture"
+          />
+          <div class="friend-details">
+            <h3 class="friend-name">
+              <a href="{% url 'show_profile' friend.pk %}">
+              {{ friend.first_name }} {{ friend.last_name }}
+              </a>
+            </h3>
+            <p class="friend-city">City: {{ friend.city }}</p>
+          </div>
+        </li>
+        {% empty %}
+        <li>No friends yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <a href="{% url 'recommend_friends' profile.pk %}">See Friend Suggestions</a>
+    <a href="{% url 'news_feed' profile.pk %}">View News Feed</a>
   </div>
-  
+
 </div>
 
 {% endblock %}

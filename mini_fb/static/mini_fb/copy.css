@@ -1,0 +1,76 @@
+.friend-suggestions-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+
+  .heading {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .friend-suggestions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .friend-suggestion-item {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    margin: 10px;
+  }
+
+  .friend-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+
+  .friend-details {
+    display: flex;
+    align-items: center;
+  } 
+    .friend-info {
+    display: flex;
+    flex-direction: column;
+  } 
+
+  .friend-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .add-friend-btn {
+    padding: 8px 12px;
+    background-color: #ff8b3e;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .add-friend-btn:hover {
+    background-color: #e07a2e;
+  }
+
+  .no-friends {
+    font-size: 16px;
+    color: #777;
+    text-align: center;
+  }

@@ -166,6 +166,7 @@ nav ul li a:hover {
     color: #007BFF;
     text-decoration: none;
     font-size: 14px;
+    margin:auto;
 }
 
 .back-link:hover {
@@ -204,4 +205,156 @@ nav ul li a:hover {
 .status a:hover {
     background-color: #2724cb;
 }
+.friends-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
 
+  .friends-list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .friend-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #e9ecef;
+    background-color: #fff;
+    border-radius: 8px;
+  }
+
+  .friend-avatar {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-right: 20px;
+  }
+
+  .friend-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .friend-name {
+    font-size: 18px;
+    margin: 0;
+    color: #343a40;
+  }
+
+  .friend-city {
+    font-size: 14px;
+    color: #6c757d;
+  }
+
+  .friend-suggestions-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+
+  .heading {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .friend-suggestions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .friend-suggestion-item {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    margin: 10px;
+  }
+
+  .friend-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+
+  .friend-details {
+    display: flex;
+    align-items: center;
+  } 
+    .friend-info {
+    display: flex;
+    flex-direction: column;
+  } 
+
+  .friend-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .add-friend-btn {
+    padding: 8px 12px;
+    background-color: #ff8b3e;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .add-friend-btn:hover {
+    background-color: #e07a2e;
+  }
+
+  .no-friends {
+    font-size: 16px;
+    color: #777;
+    text-align: center;
+  }
+  .news-feed-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .news-feed-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+  }
+
+  .status-header {
+    display: flex;
+    align-items: center;
+  }
+
+  .profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .status-images {
+    margin-top: 10px;
+  }
+
+  .status-image {
+    width: 100px;
+    height: 100px;
+    margin-right: 5px;
+  }

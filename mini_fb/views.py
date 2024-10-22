@@ -1,10 +1,11 @@
 from django.views.generic import ListView
 from django.urls import reverse
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
-from django.views.generic import UpdateView, UpdateView, DeleteView
-from .models import Profile, StatusMessage, Image
+from django.views import View
+from django.views.generic import UpdateView, UpdateView, DeleteView,CreateView
+from .models import Friend, Profile, StatusMessage, Image
 from .forms import CreateProfileForm, CreateStatusMessageForm, UpdateProfileForm
+from django.shortcuts import redirect
 class ShowAllProfilesView(ListView):
     model = Profile
     template_name = 'mini_fb/show_all_profiles.html'
@@ -69,5 +70,30 @@ class UpdateStatusMessageView(UpdateView):
 
     def get_success_url(self):
         return reverse('show_profile', kwargs={'pk': self.object.profile.pk})
+class CreateFriendView(View):
+    def dispatch(self, request, *args, **kwargs):
+        profile = Profile.objects.get(pk=kwargs['pk'])
+        other = Profile.objects.get(pk=kwargs['other_pk'])
+        profile.add_friend(other)
+        return redirect('show_profile', pk=profile.pk)
+class ShowFriendSuggestionsView(DetailView):
+    model = Profile
+    template_name = 'mini_fb/recommend_friends.html'
+    context_object_name = 'profile'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        RecommendFriends = profile.Recommend_friends()
+        context['RecommendFriends'] = RecommendFriends
 
-    
+        return context
+class ShowNewsFeedView(DetailView):
+    model = Profile
+    template_name = 'mini_fb/news_feed.html'
+    context_object_name = 'profile'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        news_feed = profile.get_news_feed()
+        context['news_feed'] = news_feed
+        return context

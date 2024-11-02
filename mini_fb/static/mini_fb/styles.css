@@ -9,7 +9,13 @@
     max-width: 300px;
     text-align: center;
 }
-
+.center-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  height: 100vh; /* Full height of the viewport */
+}
 /* Profile image styling */
 .profile-card img {
     border-radius: 50%;
@@ -101,6 +107,7 @@ nav ul li {
     margin: 0 15px;
 }
 
+
 nav ul li a {
     text-decoration: none;
     color: white;
@@ -111,6 +118,23 @@ nav ul li a {
 nav ul li a:hover {
     color: #ffffff;
     text-decoration: underline;
+}
+nav ul li button{
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+nav ul li button:hover {
+  text-decoration: underline;
+}
+nav ul p{
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 15px;
 }
 .create-profile-container {
     display: flex;

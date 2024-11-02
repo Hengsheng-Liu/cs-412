@@ -11,7 +11,9 @@
     <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
     <p>Born : {{ profile.city }}</p>
     <a href="{% url 'show_profile' profile.pk %}"> View Profile </a>
-    <a href="{% url 'create_status' profile.pk %}"> Create a new status </a>
+    {% if user.is_authenticated and user == profile.user %}
+    <a href="{% url 'create_status'%}"> Create a new status </a>
+    {% endif %}
   </div>
   {% endfor %}
 </div>

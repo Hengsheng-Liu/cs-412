@@ -11,7 +11,7 @@
             <img class="friend-avatar" src="{{ suggested_friend.profile_image_url }}" alt="{{ suggested_friend.first_name }}'s profile picture" />
             <div class="friend-info">
               <p class="friend-name">{{ suggested_friend.first_name }} {{ suggested_friend.last_name }}</p>
-              <a class="add-friend-btn" href="{% url 'add_friend' profile.pk suggested_friend.pk %}">Add Friend</a>
+              <a class="add-friend-btn" href="{% url 'add_friend' suggested_friend.pk %}">Add Friend</a>
             </div>
           </div>
         </li>

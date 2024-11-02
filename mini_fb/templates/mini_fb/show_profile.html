@@ -16,8 +16,10 @@
       <li>
         <strong>{{ status.timestamp|date:"Y-m-d H:i" }}</strong>: {{status.message }}
         <div class="status">
+          {% if user == profile.user %}
           <a href="{% url 'update_status' status.pk %}">Update</a>
           <a href="{% url 'delete_status' status.pk %}">Delete</a>
+          {% endif %}
         </div>
         {% if status.get_images %}
         <div class="status-images">
@@ -32,10 +34,12 @@
     {% else %}
     <p>No status messages.</p>
     {% endif %}
-    <a href="{% url 'create_status' profile.pk %}">Create a new status</a>
-    <a href="{% url 'update_profile' profile.pk %}" class="update-link"
+    {% if user == profile.user %}
+    <a href="{% url 'create_status'  %}">Create a new status</a>
+    <a href="{% url 'update_profile'  %}" class="update-link"
       >Update Profile</a
     >
+    {% endif %}
     <div class="friends-container">
       <h2>Friends</h2>
       <ul class="friends-list">
@@ -60,8 +64,9 @@
         {% endfor %}
       </ul>
     </div>
-    <a href="{% url 'recommend_friends' profile.pk %}">See Friend Suggestions</a>
-    <a href="{% url 'news_feed' profile.pk %}">View News Feed</a>
+    
+    <a href="{% url 'recommend_friends'  %}">See Friend Suggestions</a>
+    <a href="{% url 'news_feed'  %}">View News Feed</a>
   </div>
 
 </div>

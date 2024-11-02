@@ -6,8 +6,9 @@ from django.views.generic import UpdateView, UpdateView, DeleteView,CreateView
 from .models import Friend, Profile, StatusMessage, Image
 from .forms import CreateProfileForm, CreateStatusMessageForm, UpdateProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
+from django.contrib.auth.forms import UserCreationForm 
+from django.contrib.auth import login
 class ShowAllProfilesView(ListView):
     model = Profile
     template_name = 'mini_fb/show_all_profiles.html'
@@ -20,6 +21,23 @@ class CreateProfileView(CreateView):
     model = Profile
     form_class = CreateProfileForm
     template_name = 'mini_fb/create_profile_form.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if 'user_form' not in context:
+            context['user_form'] = UserCreationForm()
+        return context
+    def form_valid(self, form):
+        user_form = UserCreationForm(self.request.POST)
+
+        if user_form.is_valid():
+            user = user_form.save()
+            form.instance.user = user
+            login(self.request, user)
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
+    def get_success_url(self):
+        return reverse('show_all_profile')
 class CreateStatusMessageView(LoginRequiredMixin,CreateView):
     model = StatusMessage
     form_class = CreateStatusMessageForm

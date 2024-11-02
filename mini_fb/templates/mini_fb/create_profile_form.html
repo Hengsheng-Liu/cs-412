@@ -3,8 +3,12 @@
 <div class="create-profile-container">
     
       <form method="POST">
-        {% csrf_token %} {{ form.as_p }}
-        <button type="submit">Create Profile</button>
+        {% csrf_token %} 
+        <h3>Profile Information</h3>
+        {{ form.as_p }}
+        <h3>User Registration</h3>
+        {{ user_form.as_p }}
+        <button type="submit">Register and Create Profile</button>
       </form>
   </div>
   

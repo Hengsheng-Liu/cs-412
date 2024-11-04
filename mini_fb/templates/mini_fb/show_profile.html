@@ -64,9 +64,10 @@
         {% endfor %}
       </ul>
     </div>
-    
+    {% if user == profile.user %}
     <a href="{% url 'recommend_friends'  %}">See Friend Suggestions</a>
     <a href="{% url 'news_feed'  %}">View News Feed</a>
+    {% endif %}
   </div>
 
 </div>

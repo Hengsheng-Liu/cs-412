@@ -22,12 +22,13 @@
         {% else %}
         <p>Welcome, guest!</p>
         {% endif %}
+
         <li><a href="/mini_fb/">Home</a></li>
-        <li><a href="/mini_fb/">Profiles</a></li>
         <li><a href="/mini_fb/create_profile">Create Profile</a></li>
         {% if not user.is_authenticated %}
         <li><a href="{% url 'login' %}">Log in</a></li>
         {% else %}
+        <li><a href="{% url 'show_profile' %}">My Profile</a></li>
         <li>
           <form
             method="post"

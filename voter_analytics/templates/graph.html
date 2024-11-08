@@ -1,0 +1,46 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Graphs</title>
+    <link rel="stylesheet" href="{% static '/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Voter Data Graphs</h1>
+        </header>
+
+        <!-- Navigation Link -->
+        <nav>
+            <a href="{% url 'voters' %}">Back to Home</a>
+        </nav>
+
+        <!-- Filter Form -->
+        <section class="filter-section">
+            <h2>Filter Voters</h2>
+            <form method="get">
+                {% csrf_token %}
+                {% include 'filter_form.html' %}
+                <button type="submit" class="btn">Filter</button>
+            </form>
+        </section>
+
+        <!-- Graphs Section -->
+        <section class="graphs-section">
+            <div class="graph-container">
+                <div class="graph">{{ histogram|safe }}</div>
+            </div>
+            <div class="graph-container">
+                <div class="graph">{{ pie_chart|safe }}</div>
+            </div>
+            <div class="graph-container">
+                <div class="graph">{{ election_histogram|safe }}</div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

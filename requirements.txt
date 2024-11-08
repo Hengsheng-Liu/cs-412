@@ -3,3 +3,4 @@ asgiref==3.8.1; python_version >= '3.8'
 django==5.1.1; python_version >= '3.10'
 sqlparse==0.5.1; python_version >= '3.8'
 whitenoise==6.7.0; python_version >= '3.8'
+plotly==5.24.1

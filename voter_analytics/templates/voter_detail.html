@@ -31,6 +31,7 @@
             <tr><th>Voted in 2021 Primary</th><td>{{ voter.v21primary }}</td></tr>
             <tr><th>Voted in 2022 General Election</th><td>{{ voter.v22general }}</td></tr>
             <tr><th>Voted in 2023 Town Election</th><td>{{ voter.v23town }}</td></tr>
+            <tr><th>View Address on Google Maps</th><td><a href="https://www.google.com/maps/search/?api=1&query={{ voter.street_number }}+{{ voter.street_name }}+{{ voter.zip_code }}" target="_blank">View Adress</a></td></tr>
         </table>
     </div>
 </body>

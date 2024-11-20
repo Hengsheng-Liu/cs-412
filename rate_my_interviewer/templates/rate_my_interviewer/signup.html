@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
+</head>
+<body>
+    <h1>Sign Up</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ user_form.as_p }}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <p style="color: red;">{{ error }}</p>
+            {% endfor %}
+        {% endfor %}
+        {% for field in user_form %}
+            {% for error in field.errors %}
+                <p style="color: red;">{{ error }}</p>
+            {% endfor %}
+        {% endfor %}
+        <button type="submit">Sign Up</button>
+        <a href="{% url 'login' %}">Log In</a>
+        <a href="{% url 'main_page' %}">Cancel</a>
+    </form>
+    
+</body>
+</html>

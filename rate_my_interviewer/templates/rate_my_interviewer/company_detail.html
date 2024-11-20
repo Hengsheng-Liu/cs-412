@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company.name }}</title>
+    <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ company.name }}</h1>
+        <p><strong>Industry:</strong> {{ company.industry }}</p>
+        <p><strong>Location:</strong> {{ company.location }}</p>
+        <a href="{% url 'add_experience' company.company_id %}" class="btn">+</a>
+            <input type="text" name="q" placeholder="Search for role..." value="{{ query }}">
+            <button type="submit" class="btn">Search</button>
+        </form>
+        <ul>
+            {% for role in roles %}
+                <li><a href="{% url 'review_list' %}?company={{ company.company_id }}&role={{ role.title }}&job_type={{role.job_type}}">
+                    {{ role.title }} - {{ role.job_type }}</a></li>
+            {% empty %}
+                <li>No roles available for this company.</li>
+            {% endfor %}
+        </ul>
+
+        <a href="{% url 'main_page' %}" class="btn">Back to Companies</a>
+    </div>
+</body>
+</html>

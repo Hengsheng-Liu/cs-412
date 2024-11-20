@@ -1,6 +1,9 @@
+import csv
+import os
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User ## NEW
-class User(models.Model):
+class RMIProfile(models.Model):
     unique_id = models.AutoField(primary_key=True)  # Auto incrementing primary key
     name = models.TextField()
     email = models.TextField()
@@ -20,8 +23,19 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
-
-
+def load_data():
+    csv_file_path = os.path.join(settings.BASE_DIR, 'Fortune 500 Companies.csv')
+    Company.objects.all().delete()
+    with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            name = row['name']
+            industry = row['industry']
+            location = row['headquarters_state']
+            duplicate = Company.objects.filter(name=name, location=location)
+            if not duplicate:
+                company = Company(name=name, industry=industry, location=location)
+                company.save()
 class Role(models.Model):
     role_id = models.AutoField(primary_key=True)  # Auto incrementing primary key
     title = models.TextField()
@@ -34,15 +48,14 @@ class Role(models.Model):
 
 class InterviewExperience(models.Model):
     experience_id = models.AutoField(primary_key=True)  # Auto incrementing primary key
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Foreign key to User
+    user = models.ForeignKey(RMIProfile, on_delete=models.CASCADE, null=True, blank=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)  # Foreign key to Company
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)  # Foreign key to Role
+    role = models.TextField()
+    job_type = models.TextField(default="")
     experience_text = models.TextField()
     date_shared = models.DateField(auto_now_add=True)  # Automatically set to now when created
     rating = models.IntegerField()
     difficulty = models.IntegerField()
-    like = models.IntegerField(default=0)
-    dislike = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Experience by {self.user.name} for {self.role.title} at {self.company.name}"

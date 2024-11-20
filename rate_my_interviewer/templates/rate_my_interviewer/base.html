@@ -25,7 +25,7 @@
 
     <div class="container">
         <h1>Search for Companies</h1>
-        <form method="get" action="{% url 'show_profile' %}" class="search-form">
+        <form method="get" action="{% url 'main_page' %}" class="search-form">
             <input type="text" name="q" placeholder="Search for companies..." value="{{ query }}">
             <button type="submit" class="btn">Search</button>
         </form>
@@ -33,7 +33,9 @@
         <h2>Search Results</h2>
         <ul>
             {% for company in companies %}
-                <li>{{ company.name }} - {{ company.industry }} - {{ company.location }}</li>
+                <a href="{% url 'company_detail' company.company_id %}">
+                    <li>{{ company.name }}</li>
+                </a>
             {% empty %}
                 <li>No companies found.</li>
             {% endfor %}

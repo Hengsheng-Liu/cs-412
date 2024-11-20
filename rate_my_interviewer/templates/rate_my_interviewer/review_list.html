@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews for Role</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Reviews for {{ company.name }} - {{ role }} - {{job_type}}</h1>
+        <ul>
+            {% for review in reviews %}
+                <li>
+                    <p>{{ review.experience_text }}</p>
+                    <p><strong>Rating:</strong> {{ review.rating }} | <strong>Difficulty:</strong> {{ review.difficulty }}</p>
+                </li>
+            {% empty %}
+                <li>No reviews found for this role and company.</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'company_detail' company.company_id %}">Back to Company</a>
+    </div>
+</body>
+</html>

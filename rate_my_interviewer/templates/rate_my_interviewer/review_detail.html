@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Details</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Review Details</h1>
+        <p><strong>Company:</strong> {{ review.company.name }}</p>
+        <p><strong>Role:</strong> {{ review.role.title }}</p>
+        <p><strong>Reviewer:</strong> {{ review.user.name }}</p>
+        <p><strong>Experience:</strong> {{ review.experience_text }}</p>
+        <p><strong>Rating:</strong> {{ review.rating }}</p>
+        <p><strong>Difficulty:</strong> {{ review.difficulty }}</p>
+        <p><strong>Date Shared:</strong> {{ review.date_shared }}</p>
+
+        <a href="{% url 'company_detail' review.company.pk %}">Back to Company</a>
+    </div>
+</body>
+</html>

@@ -58,7 +58,7 @@ class CreateStatusMessageView(LoginRequiredMixin,CreateView):
         return self.model.objects.get(pk=self.request.user.pk)  
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profile'] = Profile.objects.get(pk=self.request.user.pk)   
+        context['profile'] = Profile.objects.get(user=self.request.user)
         return context
     def form_valid(self, form):
         sm = form.save(commit=False)
@@ -77,7 +77,8 @@ class CreateStatusMessageView(LoginRequiredMixin,CreateView):
         return super().form_valid(form)
     
     def get_success_url(self):
-        return reverse('show_profile', kwargs={'pk': self.request.user.pk})
+        profile = Profile.objects.get(user=self.request.user)
+        return reverse('show_profile', kwargs={'pk': profile.pk})
 class UpdateProfileView(LoginRequiredMixin,UpdateView):
     model = Profile
     form_class = UpdateProfileForm
@@ -88,7 +89,8 @@ class UpdateProfileView(LoginRequiredMixin,UpdateView):
         profile = Profile.objects.get(user=self.request.user)
         return profile
     def get_success_url(self):
-        return reverse('show_profile', kwargs={'pk': self.request.user.pk})
+        profile = Profile.objects.get(user=self.request.user)
+        return reverse('show_profile', kwargs={'pk': profile.pk})
 
 
 class DeleteStatusMessageView(LoginRequiredMixin,DeleteView):
@@ -99,7 +101,8 @@ class DeleteStatusMessageView(LoginRequiredMixin,DeleteView):
         profile = Profile.objects.get(user=self.request.user)
         return profile
     def get_success_url(self):
-        return reverse('show_profile', kwargs={'pk': self.request.user.pk})
+        profile = Profile.objects.get(user=self.request.user)
+        return reverse('show_profile', kwargs={'pk': profile.pk})
 class UpdateStatusMessageView(LoginRequiredMixin,UpdateView):
     model = StatusMessage
     template_name = 'mini_fb/update_status_form.html'
@@ -109,10 +112,11 @@ class UpdateStatusMessageView(LoginRequiredMixin,UpdateView):
         profile = Profile.objects.get(user=self.request.user)
         return profile
     def get_success_url(self):
-        return reverse('show_profile', kwargs={'pk': self.request.user.pk})
+        profile = Profile.objects.get(user=self.request.user)
+        return reverse('show_profile', kwargs={'pk': profile.pk})
 class CreateFriendView(LoginRequiredMixin,View):
     def dispatch(self, request, *args, **kwargs):
-        profile = Profile.objects.get(pk=self.request.user.pk)
+        profile = Profile.objects.get(user=self.request.user)
         other = Profile.objects.get(pk=kwargs['other_pk'])
         profile.add_friend(other)
         return redirect('show_profile', pk=profile.pk)
@@ -140,7 +144,7 @@ class ShowNewsFeedView(LoginRequiredMixin,DetailView):
         return profile
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        profile = Profile.objects.get(pk=self.request.user.pk)
+        profile = Profile.objects.get(user=self.request.user)
         news_feed = profile.get_news_feed()
         context['news_feed'] = news_feed
         return context

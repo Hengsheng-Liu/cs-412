@@ -58,4 +58,7 @@ class InterviewExperience(models.Model):
     difficulty = models.IntegerField()
 
     def __str__(self):
-        return f"Experience by {self.user.name} for {self.role.title} at {self.company.name}"
+        if self.user:
+            return f"Experience by {self.user.name} for {self.role} at {self.company.name}"
+        else:   
+            return f" {self.role.title} at {self.company.name}"

@@ -1,22 +1,47 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review Details</title>
+    <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
     <div class="container">
         <h1>Review Details</h1>
-        <p><strong>Company:</strong> {{ review.company.name }}</p>
-        <p><strong>Role:</strong> {{ review.role.title }}</p>
-        <p><strong>Reviewer:</strong> {{ review.user.name }}</p>
-        <p><strong>Experience:</strong> {{ review.experience_text }}</p>
-        <p><strong>Rating:</strong> {{ review.rating }}</p>
-        <p><strong>Difficulty:</strong> {{ review.difficulty }}</p>
-        <p><strong>Date Shared:</strong> {{ review.date_shared }}</p>
-
-        <a href="{% url 'company_detail' review.company.pk %}">Back to Company</a>
+        <div class="review-details">
+            <p><strong>Company:</strong> {{ review.company.name }}</p>
+            <p><strong>Role:</strong> {{ review.role.title }}</p>
+            <p><strong>Reviewer:</strong> {{ review.user.name }}</p>
+            <p><strong>Experience:</strong> {{ review.experience_text }}</p>
+            <p><strong>Rating:</strong> {{ review.rating }}</p>
+            <p><strong>Difficulty:</strong> {{ review.difficulty }}</p>
+            <p><strong>Date Shared:</strong> {{ review.date_shared }}</p>
+        </div>
+        {% if user.id == review.user.user.id %}
+        <div>
+            <a href="{% url 'modify_experience' pk=review.experience_id %}" class="btn save-btn">Edit Review</a>
+            <a href="{% url 'delete_experience' pk=review.experience_id %}" class="btn delete-btn">Delete Review</a>
+        </div>
+        {% endif %}
+        <h2>Comments</h2>
+        <ul class="comments-list">
+            {% for comment in comments %}
+            <li>
+                <p>{{ comment.user.name }}</p>
+                <p><strong>Comments: </strong> {{ comment.text }}</p>
+                <p><strong>Date Shared:</strong> {{ comment.date_shared }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        <div>
+            {% if user.is_authenticated %}
+            <a href="{% url 'add_comment' review.experience_id %}" class="btn save-btn">Add Comment</a>
+            {% endif %}
+        </div>
+        <a href="{% url 'company_detail' review.company.pk %}" class="btn back-btn">Back to Company</a>
     </div>
 </body>
 </html>

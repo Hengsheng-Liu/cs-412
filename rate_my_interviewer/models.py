@@ -56,9 +56,28 @@ class InterviewExperience(models.Model):
     date_shared = models.DateField(auto_now_add=True)  # Automatically set to now when created
     rating = models.IntegerField()
     difficulty = models.IntegerField()
-
     def __str__(self):
         if self.user:
             return f"Experience by {self.user.name} for {self.role} at {self.company.name}"
         else:   
             return f" {self.role.title} at {self.company.name}"
+class Comments(models.Model):
+    id = models.AutoField(primary_key=True)  # Auto incrementing primary key
+    user = models.ForeignKey(RMIProfile, on_delete=models.CASCADE)
+    experience = models.ForeignKey(InterviewExperience, on_delete=models.CASCADE)
+    text = models.TextField()
+    date_shared = models.DateField(auto_now_add=True)  # Automatically set to now when created
+    def __str__(self):
+        return f"Comment by {self.user.name} on {self.experience.role} at {self.experience.company.name}"
+class Likes(models.Model):
+    id = models.AutoField(primary_key=True)  # Auto incrementing primary key
+    user = models.ForeignKey(RMIProfile, on_delete=models.CASCADE)
+    experience = models.ForeignKey(InterviewExperience, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"Like by {self.user.name} on {self.experience.role} at {self.experience.company.name}"
+class Dislikes(models.Model):
+    id = models.AutoField(primary_key=True)  # Auto incrementing primary key
+    user = models.ForeignKey(RMIProfile, on_delete=models.CASCADE)
+    experience = models.ForeignKey(InterviewExperience, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"Dislike by {self.user.name} on {self.experience.role} at {self.experience.company.name}"

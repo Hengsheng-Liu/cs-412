@@ -1,6 +1,7 @@
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Company, InterviewExperience, RMIProfile
+from .models import Company, InterviewExperience, RMIProfile, Comments
 
 class CreateUserForm(forms.ModelForm):
     name = forms.CharField(label="Name", required=True)
@@ -76,3 +77,11 @@ class InterviewExperienceForm(forms.ModelForm):
             self.fields['company'].initial = company
             
             self.fields['company'].disabled = True
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ['text']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['text'].widget.attrs.update({'placeholder': 'Write your reply here...'})

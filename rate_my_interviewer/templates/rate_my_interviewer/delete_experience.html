@@ -1,0 +1,28 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Details</title>
+    <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Delete Interview Experience</h1>
+        <h2>Are you sure you want to delete this experience?</h2>
+        <div class="experience-details">
+            <p><strong>Company:</strong> {{ object.company.name }}</p>
+            <p><strong>Role:</strong> {{ object.role.title }}</p>
+            <p><strong>Experience:</strong> {{ object.experience_text }}</p>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn delete-btn">Yes, Delete</button>
+            <a href="{% url 'review_detail' pk=object.experience_id %}" class="btn cancel-btn">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

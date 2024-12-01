@@ -9,18 +9,22 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="{% url 'main_page' %}">Home</a>
-        {% if user.is_authenticated %}
-            <p>Welcome, {{ user.username }}!</p>
-            <a href="{% url 'profile' %}">My Profile</a>
-            <form method="post" action="{% url 'logout' %}" style="display: inline">
-                {% csrf_token %}
-                <button type="submit">Log Out</button>
-            </form>
-        {% else %}
-            <a href="{% url 'login' %}">Log In</a>
-            <a href="{% url 'signup' %}">Sign Up</a>
-        {% endif %}
+        <div class="navbar-left">
+            <a href="{% url 'main_page' %}">Rate My Interviewer</a>
+        </div>
+        <div class="navbar-right">
+            {% if user.is_authenticated %}
+                <span>Welcome, {{ user.username }}!</span>
+                <a href="{% url 'profile' %}">My Profile</a>
+                <form method="post" action="{% url 'logout' %}" style="display: inline">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">Log Out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Log In</a>
+                <a href="{% url 'signup' %}">Sign Up</a>
+            {% endif %}
+        </div>
     </div>
 
     <div class="container">
@@ -40,6 +44,21 @@
                 <li>No companies found.</li>
             {% endfor %}
         </ul>
+
+        <!-- Pagination Controls -->
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?q={{ query }}&page=1">First</a>
+                <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+        
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        
+            {% if page_obj.has_next %}
+                <a href="?q={{ query }}&page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>

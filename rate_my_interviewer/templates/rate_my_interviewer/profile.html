@@ -15,7 +15,21 @@
         <p><strong>Email:</strong> {{ user.email }}</p>
         <p><strong>College:</strong> {{ user.college }}</p>
 
-        <!-- Add more fields as needed -->
+        <h2>Comments</h2>
+        <ul class="comments-list">
+            {% for comment in comments %}
+                <a href="{% url 'review_detail' comment.experience_id %}" class = "comment-link">
+                    <li class="comment-item">
+                        <p class="comment-company"><strong>Company:</strong> {{ comment.company }}</p>
+                        <p class="comment-role"><strong>Role:</strong> {{ comment.role }}</p>
+                        <p class="comment-text">{{ comment.experience_text }}</p>
+                    </li>
+                </a>
+            {% empty %}
+                <p class="no-comments">No comments yet.</p>
+            {% endfor %}
+        </ul>
+        
         
         <a href="{% url 'main_page' %}" class="btn">Back to Home</a>
     </div>

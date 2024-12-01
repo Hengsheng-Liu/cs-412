@@ -1,19 +1,22 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Interview Experience</title>
+    <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
     <div class="container">
         <h1>Add Interview Experience for {{ company.name }}</h1>
-        <form method="post">
+        <form method="post" class="experience-form">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn save-btn ">Submit</button>
+            <a href="{% url 'company_detail' company.company_id %}" class="btn btn-secondary">Cancel</a>
+
         </form>
-        <a href="{% url 'company_detail' company.company_id %}" class="btn btn-secondary">Cancel</a>
     </div>
 </body>
 </html>

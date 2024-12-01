@@ -1,24 +1,40 @@
+{%load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reviews for Role</title>
+    <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
     <div class="container">
-        <h1>Reviews for {{ company.name }} - {{ role }} - {{job_type}}</h1>
-        <ul>
+        <h1>Reviews for {{ company.name }} - {{ role }} - {{ job_type }}</h1>
+        <ul class="reviews-list">
             {% for review in reviews %}
-                <li>
-                    <p>{{ review.experience_text }}</p>
-                    <p><strong>Rating:</strong> {{ review.rating }} | <strong>Difficulty:</strong> {{ review.difficulty }}</p>
-                </li>
+                <a href = "{% url 'review_detail' review.experience_id %}" class = "comment-link">
+                    <li class="review-item">
+                        {% if review.user %}
+                            <p class="review-user"><strong>User:</strong> {{ review.user }}</p>
+                        {% endif %}
+                        <p class="review-text">{{ review.experience_text }}</p>
+                        <p class="review-meta">
+                            <strong>Rating:</strong> {{ review.rating }} | 
+                            <strong>Difficulty:</strong> {{ review.difficulty }}
+                        </p>
+                    </li>
             {% empty %}
-                <li>No reviews found for this role and company.</li>
+                <li class="no-reviews">No reviews found for this role and company.</li>
             {% endfor %}
         </ul>
-        <a href="{% url 'company_detail' company.company_id %}">Back to Company</a>
+        <div class="action-links">
+            <a class="btn btn-primary" href="{% url 'add_experience' company.company_id %}?role={{ role|urlencode }}&job_type={{ job_type|urlencode }}">
+                Add Review
+            </a>
+            <a class="btn btn-secondary" href="{% url 'company_detail' company.company_id %}">
+                Back to Company
+            </a>
+        </div>
     </div>
 </body>
 </html>

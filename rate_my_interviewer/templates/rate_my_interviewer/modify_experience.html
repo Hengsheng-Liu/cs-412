@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Details</title>
+    <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Modify Interview Experience</h1>
+        <h2>{{ company.name }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn save-btn">Save Changes</button>
+            <a href="{% url 'review_detail' pk=object.experience_id %}" class="btn cancel-btn">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

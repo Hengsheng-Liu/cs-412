@@ -13,20 +13,24 @@
         <h1>{{ company.name }}</h1>
         <p><strong>Industry:</strong> {{ company.industry }}</p>
         <p><strong>Location:</strong> {{ company.location }}</p>
-        <a href="{% url 'add_experience' company.company_id %}" class="btn">+</a>
+        
+        <form method="GET" action="">
             <input type="text" name="q" placeholder="Search for role..." value="{{ query }}">
             <button type="submit" class="btn">Search</button>
         </form>
-        <ul>
+        
+        <ul class="roles-list">
             {% for role in roles %}
-                <li><a href="{% url 'review_list' %}?company={{ company.company_id }}&role={{ role.title }}&job_type={{role.job_type}}">
-                    {{ role.title }} - {{ role.job_type }}</a></li>
-            {% empty %}
-                <li>No roles available for this company.</li>
+                <li>
+                    <a href="{% url 'review_list' %}?company={{ company.company_id }}&role={{ role.title }}&job_type={{ role.job_type }}">
+                        {{ role.title }} - {{ role.job_type }}
+                    </a>
+                </li>
             {% endfor %}
+            
         </ul>
-
-        <a href="{% url 'main_page' %}" class="btn">Back to Companies</a>
+        <a href="{% url 'add_experience' company.company_id %}" class="save-btn">Add Review</a>
+        <a href="{% url 'main_page' %}" class="btn back-btn">Back to Companies</a>
     </div>
 </body>
 </html>

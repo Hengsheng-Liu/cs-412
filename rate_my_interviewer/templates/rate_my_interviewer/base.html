@@ -37,7 +37,7 @@
         <h2>Search Results</h2>
         <ul>
             {% for company in companies %}
-                <a href="{% url 'company_detail' company.company_id %}">
+                <a href="{% url 'company_detail' company.company_id %}" class = 'comment-link'>
                     <li>{{ company.name }}</li>
                 </a>
             {% empty %}

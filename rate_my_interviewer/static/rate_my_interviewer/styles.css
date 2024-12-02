@@ -293,6 +293,9 @@ ul li {
 .comment-link {
     text-decoration: none; /* Remove underline from link */
 }
+.comment-link:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
 .review-details {
     padding: 15px;
     background: #f9f9f9;

@@ -5,18 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static '/mini_fb/styles.css' %}"
-    />
+    <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
+
 </head>
-<div class="center-container">
+<div class="container">
   <h1>Login</h1>
-  <form method="post">
+  <form method="post" >
     {% csrf_token %} {{ form.as_p }}
-    <button type="submit">Login</button>
+    <button type="submit" class="btn save-btn ">Login</button>
     <input type="hidden" name="next" value="{% url 'profile' %}" />
-    <a href="{% url 'signup' %}">Sign Up</a>
+    <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a>
   </form>
 </div>

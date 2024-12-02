@@ -9,7 +9,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+import plotly
+import plotly.graph_objs as go
 from .forms import CommentForm, CreateUserForm, InterviewExperienceForm
 from django.shortcuts import render
 from .models import Company
@@ -51,6 +52,77 @@ class CompanyDetailView(DetailView):
         
         context['roles'] = roles
         context['query'] = query  # Pass the query to the template
+        return context
+import plotly.graph_objs as go
+from django.views.generic.detail import DetailView
+from .models import Company, InterviewExperience, Role
+
+class CompanyStatsView(DetailView):
+    model = Company
+    template_name = 'rate_my_interviewer/company_stats.html'
+    context_object_name = 'company'
+
+    def get_object(self):
+        return self.model.objects.get(company_id=self.kwargs['pk'])  # Get the company instance by ID
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        company = self.get_object()
+        reviews = InterviewExperience.objects.filter(company=company)
+
+        ratings = {}
+        difficulties = {}
+
+        # Group reviews by role and calculate statistics
+        for review in reviews:
+            if review.role not in ratings:
+                ratings[review.role] = []
+                difficulties[review.role] = []
+            ratings[review.role].append(review.rating)
+            difficulties[review.role].append(review.difficulty)
+
+        # Create data for ratings plot
+        roles = list(ratings.keys())
+        avg_ratings = [sum(ratings[role]) / len(ratings[role]) for role in ratings]
+        rating_fig = go.Figure(
+            data=[go.Scatter(
+                x=roles,
+                y=avg_ratings,
+                mode='lines+markers',
+                name='Average Rating',
+                line=dict(color='blue')
+            )],
+            layout=go.Layout(
+                title='Average Ratings by Role',
+                xaxis_title='Roles',
+                yaxis_title='Average Rating',
+                legend=dict(orientation="h")
+            )
+        )
+        rating_plot_html = rating_fig.to_html(full_html=False)
+
+        # Create data for difficulty plot
+        avg_difficulties = [sum(difficulties[role]) / len(difficulties[role]) for role in difficulties]
+        difficulty_fig = go.Figure(
+            data=[go.Scatter(
+                x=roles,
+                y=avg_difficulties,
+                mode='lines+markers',
+                name='Average Difficulty',
+                line=dict(color='red')
+            )],
+            layout=go.Layout(
+                title='Average Difficulty by Role',
+                xaxis_title='Roles',
+                yaxis_title='Average Difficulty',
+                legend=dict(orientation="h")
+            )
+        )
+        difficulty_plot_html = difficulty_fig.to_html(full_html=False)
+
+        # Add plots and additional context
+        context['rating_plot'] = rating_plot_html
+        context['difficulty_plot'] = difficulty_plot_html
         return context
 
 class AddInterviewExperienceView(CreateView):

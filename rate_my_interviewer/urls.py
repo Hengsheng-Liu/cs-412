@@ -11,9 +11,11 @@ urlpatterns = [
         path('companies/', views.CompanyListView.as_view(), name='company_list'),
         path('company/<int:pk>/', views.CompanyDetailView.as_view(), name='company_detail'),
         path('company/<int:pk>/add-experience/', views.AddInterviewExperienceView.as_view(), name='add_experience'),
+        path('company/<int:pk>/company-stats/', views.CompanyStatsView.as_view(), name='company_stats'),
         path('reviews/', views.ReviewListView.as_view(), name='review_list'),
         path('review/<int:pk>/', views.ReviewDetailView.as_view(), name='review_detail'),
         path('review/<int:pk>/delete/', views.DeleteInterviewExperienceView.as_view(), name='delete_experience'),
         path('review/<int:pk>/edit/', views.ModifyInterviewExperienceView.as_view(), name='modify_experience'),
         path('comment/<int:pk>/add/', views.CommentCreateView.as_view(), name='add_comment'),
+        
 ]

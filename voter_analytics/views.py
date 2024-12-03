@@ -51,7 +51,7 @@ class VoterDetailView(DetailView):
     context_object_name = 'voter'
 class GraphsView(ListView):
     model = Voter
-    template_name = 'graph.html'
+    template_name = 'graphs.html'
     context_object_name = 'voters'
 
     def get_queryset(self):

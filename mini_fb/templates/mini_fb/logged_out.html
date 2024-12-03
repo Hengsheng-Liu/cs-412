@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logged Out</title>
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static '/mini_fb/styles.css' %}"
+  />
+</head>
+<body>
+    <div class="container">
+        <h1>You have successfully logged out</h1>
+        <p>Thank you for visiting our platform.</p>
+        <a href="{% url 'login' %}">Click here to log back in</a> or
+        <a href="{% url 'show_all_profiles' %}">Return to home page</a>.
+    </div>
+</body>
+</html>

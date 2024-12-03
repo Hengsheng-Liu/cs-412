@@ -122,7 +122,7 @@ class CreateFriendView(LoginRequiredMixin,View):
         return redirect('show_profile', pk=profile.pk)
 class ShowFriendSuggestionsView(LoginRequiredMixin,DetailView):
     model = Profile
-    template_name = 'mini_fb/recommend_friends.html'
+    template_name = 'mini_fb/friend_suggestions.html'
     context_object_name = 'profile'
 
     def get_object(self):

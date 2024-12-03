@@ -8,7 +8,7 @@ import plotly.graph_objs as go
 import plotly.io as pio
 class VoterListView(ListView):
     model = Voter
-    template_name = 'voter_list.html'
+    template_name = 'voter_analytics/voter_list.html'
     context_object_name = 'voters'
     paginate_by = 100
 
@@ -47,11 +47,11 @@ class VoterListView(ListView):
 
 class VoterDetailView(DetailView):
     model = Voter
-    template_name = 'voter_detail.html'
+    template_name = 'voter_analytics/voter_detail.html'
     context_object_name = 'voter'
 class GraphsView(ListView):
     model = Voter
-    template_name = 'graphs.html'
+    template_name = 'voter_analytics/graphs.html'
     context_object_name = 'voters'
 
     def get_queryset(self):

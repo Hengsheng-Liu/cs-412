@@ -24,7 +24,7 @@
             <h2>Filter Voters</h2>
             <form method="get">
                 {% csrf_token %}
-                {% include 'filter_form.html' %}
+                {% include 'voter_analytics/filter_form.html' %}
                 <button type="submit" class="btn">Filter</button>
             </form>
         </section>

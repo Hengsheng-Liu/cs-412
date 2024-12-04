@@ -6,15 +6,13 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Comments, Company, RMIProfile,User, Role, InterviewExperience
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 import plotly
 import plotly.graph_objs as go
-from .forms import CommentForm, CreateUserForm, InterviewExperienceForm
-from django.shortcuts import render
-from .models import Company
-
+from .forms import CommentForm, CreateUserForm, InterviewExperienceForm,CompanyComparisonForm
+from .models import Company, InterviewExperience, Role
 class CompanyListView(ListView):
     model = Company
     template_name = 'rate_my_interviewer/base.html'
@@ -24,14 +22,28 @@ class CompanyListView(ListView):
     def get_queryset(self):
         # Get the search query from the GET parameters
         query = self.request.GET.get('q', '')
+        industry = self.request.GET.get('industry', '')
+        location = self.request.GET.get('location', '')
+        companies = Company.objects.all()
+
+        # Apply filters
         if query:
-            return Company.objects.filter(name__icontains=query).distinct()
-        return Company.objects.all()  # Default: Show all companies
+            companies = companies.filter(name__icontains=query)
+        if industry:
+            companies = companies.filter(industry__icontains=industry)
+        if location:
+            companies = companies.filter(location__icontains=location)
+
+        # Order by name
+        return companies.order_by('name')
 
     def get_context_data(self, **kwargs):
         # Add the search query to the context
         context = super().get_context_data(**kwargs)
         context['query'] = self.request.GET.get('q', '')
+        context['industries'] = sorted(set(Company.objects.values_list('industry', flat=True)))
+        context['locations'] = sorted(set(Company.objects.values_list('location', flat=True)))
+        
         return context
 class CompanyDetailView(DetailView):
     model = Company
@@ -53,9 +65,6 @@ class CompanyDetailView(DetailView):
         context['roles'] = roles
         context['query'] = query  # Pass the query to the template
         return context
-import plotly.graph_objs as go
-from django.views.generic.detail import DetailView
-from .models import Company, InterviewExperience, Role
 
 class CompanyStatsView(DetailView):
     model = Company
@@ -278,4 +287,70 @@ class CommentCreateView(CreateView):
         comment.experience = InterviewExperience.objects.get(experience_id=self.kwargs['pk'])
         comment.save()
         return super().form_valid(form) 
-    
+
+
+class CompanyComparisonView(View):
+    template_name = 'rate_my_interviewer/comparison.html'
+
+    def get(self, request):
+        form = CompanyComparisonForm(request.GET or None)
+        context = {'form': form}
+
+        if form.is_valid():
+            company1 = form.cleaned_data['company1']
+            company2 = form.cleaned_data['company2']
+
+            # Fetch experiences for both companies
+            experiences1 = InterviewExperience.objects.filter(company=company1)
+            experiences2 = InterviewExperience.objects.filter(company=company2)
+
+            # Calculate average ratings and difficulties for each company
+            avg_rating1 = (
+                sum(exp.rating for exp in experiences1) / len(experiences1) if experiences1.exists() else 0
+            )
+            avg_rating2 = (
+                sum(exp.rating for exp in experiences2) / len(experiences2) if experiences2.exists() else 0
+            )
+            avg_difficulty1 = (
+                sum(exp.difficulty for exp in experiences1) / len(experiences1) if experiences1.exists() else 0
+            )
+            avg_difficulty2 = (
+                sum(exp.difficulty for exp in experiences2) / len(experiences2) if experiences2.exists() else 0
+            )
+
+            # Rating comparison plot
+            rating_fig = go.Figure(data=[
+                go.Bar(name=company1.name, x=["Average Rating"], y=[avg_rating1], marker_color='blue'),
+                go.Bar(name=company2.name, x=["Average Rating"], y=[avg_rating2], marker_color='orange')
+            ])
+            rating_fig.update_layout(
+                title='Average Ratings Comparison',
+                xaxis_title='Metric',
+                yaxis_title='Average Rating',
+                barmode='group'
+            )
+            rating_plot_html = rating_fig.to_html(full_html=False)
+
+            # Difficulty comparison plot
+            difficulty_fig = go.Figure(data=[
+                go.Bar(name=company1.name, x=["Average Difficulty"], y=[avg_difficulty1], marker_color='blue'),
+                go.Bar(name=company2.name, x=["Average Difficulty"], y=[avg_difficulty2], marker_color='orange')
+            ])
+            difficulty_fig.update_layout(
+                title='Average Difficulties Comparison',
+                xaxis_title='Metric',
+                yaxis_title='Average Difficulty',
+                barmode='group'
+            )
+            difficulty_plot_html = difficulty_fig.to_html(full_html=False)
+
+            # Add plots and additional context
+            context.update({
+                'company1': company1,
+                'company2': company2,
+                'rating_plot': rating_plot_html,
+                'difficulty_plot': difficulty_plot_html,
+            })
+
+        return render(request, self.template_name, context)
+

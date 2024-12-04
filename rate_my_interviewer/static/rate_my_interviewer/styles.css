@@ -102,19 +102,28 @@ input[type="text"], input[type="password"], input[type="email"] {
 
 /* Search Form */
 .search-form {
+    max-width: 600px;
+    margin: 0 auto;
     display: flex;
-    margin-bottom: 20px;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.search-form input[type="text"] {
-    flex: 1;
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group-inline {
+    display: flex;
+    gap: 10px;
+}
+
+.form-input, .form-select {
+    width: 100%;
     padding: 10px;
+    font-size: 16px;
     border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
-}
-
-.search-form .btn {
-    border-radius: 0 5px 5px 0;
+    border-radius: 5px;
 }
 
 /* List */

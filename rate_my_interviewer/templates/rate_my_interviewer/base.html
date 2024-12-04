@@ -23,6 +23,7 @@
             {% else %}
                 <a href="{% url 'login' %}">Log In</a>
                 <a href="{% url 'signup' %}">Sign Up</a>
+                <a href ="{% url 'comparison' %}">Compare</a>
             {% endif %}
         </div>
     </div>
@@ -30,8 +31,29 @@
     <div class="container">
         <h1>Search for Companies</h1>
         <form method="get" action="{% url 'main_page' %}" class="search-form">
-            <input type="text" name="q" placeholder="Search for companies..." value="{{ query }}">
-            <button type="submit" class="btn">Search</button>
+            <div class="form-group">
+                <input type="text" name="q" placeholder="Search for companies..." value="{{ query }}" class="form-input">
+            </div>
+        
+            <div class="form-group form-group-inline">
+                <select name="industry" class="form-select">
+                    <option value="">All Industries</option>
+                    {% for industry in industries %}
+                        <option value="{{ industry }}">{{ industry }}</option>
+                    {% endfor %}
+                </select>
+                
+                <select name="location" class="form-select">
+                    <option value="">All Locations</option>
+                    {% for location in locations %}
+                        <option value="{{ location }}">{{ location }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            <div >
+                <button type="submit" class="btn">Search</button>
+            </div>
         </form>
 
         <h2>Search Results</h2>

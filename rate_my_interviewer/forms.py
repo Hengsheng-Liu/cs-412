@@ -21,6 +21,17 @@ class CreateUserForm(forms.ModelForm):
 
         return cleaned_data
 
+class CompanyComparisonForm(forms.Form):
+    company1 = forms.ModelChoiceField(
+        queryset=Company.objects.all().order_by('name').distinct(),
+        label="Select Company 1",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    company2 = forms.ModelChoiceField(
+        queryset=Company.objects.all().order_by('name').distinct(),
+        label="Select Company 2",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
 
 class InterviewExperienceForm(forms.ModelForm):
     RATING_CHOICES = [(i, str(i)) for i in range(1, 6)] 

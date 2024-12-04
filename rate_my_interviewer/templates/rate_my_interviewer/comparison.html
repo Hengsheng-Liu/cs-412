@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company.name }}</title>
+    <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Compare Companies</h1>
+
+        <form method="get">
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Compare</button>
+        </form>
+        
+        {% if company1 and company2 %}
+            <h2>{{ company1.name }} vs {{ company2.name }}</h2>
+        
+            <div>
+                <h3>Ratings Comparison</h3>
+                <div>
+                    {{ rating_plot|safe }}
+                </div>
+            </div>
+        
+            <div>
+                <h3>Difficulties Comparison</h3>
+                <div>
+                    {{ difficulty_plot|safe }}
+                </div>
+            </div>
+        {% endif %}
+        <a href="{% url 'main_page' %}" class="btn back-btn">Back to Companies</a>
+    </div>
+</body>
+</html>

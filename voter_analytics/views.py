@@ -6,6 +6,8 @@ from django.db.models.functions import ExtractYear
 from django.db.models import Count, Q
 import plotly.graph_objs as go
 import plotly.io as pio
+
+
 class VoterListView(ListView):
     model = Voter
     template_name = 'voter_analytics/voter_list.html'
@@ -113,3 +115,4 @@ class GraphsView(ListView):
         context['election_histogram'] = pio.to_html(election_histogram, full_html=False)
 
         return context
+

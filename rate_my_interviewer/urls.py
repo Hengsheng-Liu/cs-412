@@ -17,5 +17,5 @@ urlpatterns = [
         path('review/<int:pk>/delete/', views.DeleteInterviewExperienceView.as_view(), name='delete_experience'),
         path('review/<int:pk>/edit/', views.ModifyInterviewExperienceView.as_view(), name='modify_experience'),
         path('comment/<int:pk>/add/', views.CommentCreateView.as_view(), name='add_comment'),
-        
+        path('comparison/', views.CompanyComparisonView.as_view(), name='comparison'),
 ]

@@ -192,6 +192,9 @@ class ReviewDetailView(DetailView):
         context['review'] = review
         context['requred_credits'] = self.get_object().credits_required
         context['comments'] = Comments.objects.filter(experience=review)
+        print(context['owner'])
+        print(context['unlocked'])
+        print(context['requred_credits'])
         return context
 class UnlockInteriewQuestionView(LoginRequiredMixin, View):
 

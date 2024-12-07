@@ -185,9 +185,10 @@ class ReviewDetailView(DetailView):
         review = self.get_object()
         if self.request.user.is_authenticated:
             context['owner'] = review.user == RMIProfile.objects.get(user=self.request.user)
+            context['unlocked'] = Unlock.objects.filter(user=RMIProfile.objects.get(user=self.request.user), experience=review).exists()
         else:
             context['owner'] = False
-        context['unlocked'] = Unlock.objects.filter(user=RMIProfile.objects.get(user=self.request.user), experience=review).exists()
+            context['unlocked'] = False
         context['review'] = review
         context['requred_credits'] = self.get_object().credits_required
         context['comments'] = Comments.objects.filter(experience=review)
@@ -195,7 +196,7 @@ class ReviewDetailView(DetailView):
 class UnlockInteriewQuestionView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
-        
+
         user_profile = RMIProfile.objects.get(user=self.request.user)
         other_user = RMIProfile.objects.get(unique_id=self.kwargs['owner'])
         credits_amount = self.kwargs['credits']

@@ -12,7 +12,7 @@
     <div class="container">
         <h1>Modify Interview Experience</h1>
         <h2>{{ company.name }}</h2>
-        <form method="post">
+        <form method="post" class = "experience-form">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn save-btn">Save Changes</button>

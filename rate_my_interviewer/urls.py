@@ -18,4 +18,7 @@ urlpatterns = [
         path('review/<int:pk>/edit/', views.ModifyInterviewExperienceView.as_view(), name='modify_experience'),
         path('comment/<int:pk>/add/', views.CommentCreateView.as_view(), name='add_comment'),
         path('comparison/', views.CompanyComparisonView.as_view(), name='comparison'),
+        path('CheckIn/', views.UserCheckInView.as_view(), name='CheckIn'),
+        path('unlock_review/<int:owner>/<int:credits>/<int:experience>', views.UnlockInteriewQuestionView.as_view(), name='unlock_review'),
+        path('not_enough_credits/', views.NotEnoughCreditsView.as_view(), name='not_enough_credits'),
 ]

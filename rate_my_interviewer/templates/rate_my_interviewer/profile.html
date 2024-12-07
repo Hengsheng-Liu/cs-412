@@ -5,31 +5,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Details</title>
+    <title>User Profile</title>
     <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
     <div class="container">
-        <h1>User Details</h1>
-        <p><strong>Name:</strong> {{ user.name }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>College:</strong> {{ user.college }}</p>
-
-        <h2>Comments</h2>
-        <ul class="comments-list">
-            {% for comment in comments %}
-                <a href="{% url 'review_detail' comment.experience_id %}" class = "comment-link">
-                    <li class="comment-item">
-                        <p class="comment-company"><strong>Company:</strong> {{ comment.company }}</p>
-                        <p class="comment-role"><strong>Role:</strong> {{ comment.role }}</p>
-                        <p class="comment-text">{{ comment.experience_text }}</p>
-                    </li>
-                </a>
-            {% empty %}
-                <p class="no-comments">No comments yet.</p>
-            {% endfor %}
-        </ul>
-        
+        {% if profile %}
+            <h1>User Details</h1>
+            <p><strong>Name:</strong> {{ profile.user.name }}</p>
+            <p><strong>Email:</strong> {{ profile.user.email }}</p>
+            <p><strong>College:</strong> {{ profile.college }}</p>
+            <p><strong>Credits:</strong> {{ profile.credits }}</p>
+            
+            {% if not TodayCheckIn %}
+                <form action="{% url 'CheckIn' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Check In</button>
+                </form>
+            {% else %}
+                <p><strong>You have already checked in today.</strong></p>
+            {% endif %}
+            
+            <h2>Comments</h2>
+            <ul class="comments-list">
+                {% for comment in comments %}
+                    <a href="{% url 'review_detail' comment.experience_id %}" class="comment-link">
+                        <li class="comment-item">
+                            <p><strong>Company:</strong> {{ comment.company }}</p>
+                            <p><strong>Role:</strong> {{ comment.role }}</p>
+                            <p>{{ comment.experience_text }}</p>
+                        </li>
+                    </a>
+                {% empty %}
+                    <p class="no-comments">No comments yet.</p>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h1>Please create a profile</h1>
+        {% endif %}
         
         <a href="{% url 'main_page' %}" class="btn">Back to Home</a>
     </div>

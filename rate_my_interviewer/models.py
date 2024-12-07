@@ -8,6 +8,7 @@ class RMIProfile(models.Model):
     name = models.TextField()
     email = models.TextField()
     college = models.TextField()
+    credits = models.IntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE,default=1) ## NEW
 
 
@@ -47,15 +48,25 @@ class Role(models.Model):
 
 
 class InterviewExperience(models.Model):
+    TYPE_CHOICES = [
+        ("Behavioral", "Behavioral"),
+        ("Technical", "Technical"),
+        ("Case Study", "Case Study"),
+    ]
     experience_id = models.AutoField(primary_key=True)  # Auto incrementing primary key
     user = models.ForeignKey(RMIProfile, on_delete=models.CASCADE, null=True, blank=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)  # Foreign key to Company
     role = models.TextField()
+    type = models.CharField(max_length=50, choices=TYPE_CHOICES, default="Behavioral")
+    question = models.TextField(default="")
     job_type = models.TextField(default="")
     experience_text = models.TextField()
     date_shared = models.DateField(auto_now_add=True)  # Automatically set to now when created
     rating = models.IntegerField()
     difficulty = models.IntegerField()
+    offer = models.BooleanField(default=False)
+    credits_required = models.BooleanField(default=False)
+    credits_amount = models.IntegerField(default=0)
     def __str__(self):
         if self.user:
             return f"Experience by {self.user.name} for {self.role} at {self.company.name}"
@@ -69,15 +80,13 @@ class Comments(models.Model):
     date_shared = models.DateField(auto_now_add=True)  # Automatically set to now when created
     def __str__(self):
         return f"Comment by {self.user.name} on {self.experience.role} at {self.experience.company.name}"
-class Likes(models.Model):
+class Unlock(models.Model):
     id = models.AutoField(primary_key=True)  # Auto incrementing primary key
     user = models.ForeignKey(RMIProfile, on_delete=models.CASCADE)
     experience = models.ForeignKey(InterviewExperience, on_delete=models.CASCADE)
     def __str__(self):
-        return f"Like by {self.user.name} on {self.experience.role} at {self.experience.company.name}"
-class Dislikes(models.Model):
+        return f"{self.user.name} unlocked {self.experience.role} at {self.experience.company.name}"
+class CheckIn(models.Model):
     id = models.AutoField(primary_key=True)  # Auto incrementing primary key
     user = models.ForeignKey(RMIProfile, on_delete=models.CASCADE)
-    experience = models.ForeignKey(InterviewExperience, on_delete=models.CASCADE)
-    def __str__(self):
-        return f"Dislike by {self.user.name} on {self.experience.role} at {self.experience.company.name}"
+    date = models.DateField(auto_now_add=True)  # Automatically set to now when created

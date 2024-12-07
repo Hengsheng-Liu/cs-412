@@ -428,3 +428,74 @@ ul li {
     font-size: 14px;
     color: #333;
 }
+
+.search-results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Table header */
+.search-results-table thead {
+    background-color: #007BFF;
+    color: white;
+}
+
+.search-results-table th,
+.search-results-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+/* Alternating row colors */
+.search-results-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.search-results-table tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+/* Hover effect */
+.search-results-table tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+/* Links inside the table */
+.company-link {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.company-link:hover {
+    text-decoration: underline;
+}
+
+/* No results row */
+.no-results {
+    text-align: center;
+    font-style: italic;
+    color: #999;
+    background-color: #f2f2f2;
+}
+
+/* Table title styling */
+.search-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #333;
+}
+.credits-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

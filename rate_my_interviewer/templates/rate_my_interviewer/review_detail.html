@@ -19,8 +19,17 @@
             <p><strong>Rating:</strong> {{ review.rating }}</p>
             <p><strong>Difficulty:</strong> {{ review.difficulty }}</p>
             <p><strong>Date Shared:</strong> {{ review.date_shared }}</p>
+            {% if not owner and not unlocked and requred_credits and user.is_authenticated %}
+                <p><strong>Question: </strong> {{ review.credits_amount }}</p>
+                <form action="{% url 'unlock_review' owner=review.user.unique_id credits=review.credits_amount experience=review.experience_id %}" method = "post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn unlock-btn">Unlock Question</button>
+                </form>
+            {% else %}
+            <p><strong>Question: </strong>{{ review.question }}</p>
+            {% endif %}
         </div>
-        {% if user.id == review.user.user.id %}
+        {% if user.is_authenticated and user.id == review.user.user.id %}
         <div>
             <a href="{% url 'modify_experience' pk=review.experience_id %}" class="btn save-btn">Edit Review</a>
             <a href="{% url 'delete_experience' pk=review.experience_id %}" class="btn delete-btn">Delete Review</a>

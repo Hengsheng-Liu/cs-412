@@ -33,6 +33,8 @@ class CompanyComparisonForm(forms.Form):
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
+from .models import InterviewExperience, Company
+
 class InterviewExperienceForm(forms.ModelForm):
     RATING_CHOICES = [(i, str(i)) for i in range(1, 6)] 
     JOB_TYPE_CHOICES = [
@@ -42,6 +44,12 @@ class InterviewExperienceForm(forms.ModelForm):
         ('Contract', 'Contract'),
         ('Other', 'Other'),
     ]
+    TYPE_CHOICES = [
+        ("Behavioral", "Behavioral"),
+        ("Technical", "Technical"),
+        ("Case Study", "Case Study"),
+    ]
+
     company = forms.ModelChoiceField(
         queryset=Company.objects.all(),
         required=True,
@@ -50,12 +58,23 @@ class InterviewExperienceForm(forms.ModelForm):
     role = forms.CharField(
         label="Role",
         required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'Enter the role'})
+        widget=forms.TextInput(attrs={'placeholder': 'Enter the role', 'class': 'form-control'})
+    )
+    type = forms.ChoiceField(
+        label="Type",
+        choices=TYPE_CHOICES,
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    question = forms.CharField(
+        label="Question",
+        required=False,
+        widget=forms.Textarea(attrs={'placeholder': 'Enter the question (if any)', 'class': 'form-control'})
     )
     experience_text = forms.CharField(
         label="Experience",
         required=False,
-        widget=forms.Textarea(attrs={'placeholder': 'Share your experience'})
+        widget=forms.Textarea(attrs={'placeholder': 'Share your experience', 'class': 'form-control'})
     )
     rating = forms.ChoiceField(
         label="Rating",
@@ -75,19 +94,39 @@ class InterviewExperienceForm(forms.ModelForm):
         required=True,
         widget=forms.Select(attrs={'class': 'form-control'})
     )
+    offer = forms.BooleanField(
+        label="Received Offer?",
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+    credits_required = forms.BooleanField(
+        label="Charge for credits?",
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+    credits_amount = forms.IntegerField(
+        label="Credits",
+        required=False,
+        widget=forms.NumberInput(attrs={'placeholder': 'Enter the number of credits', 'class': 'form-control'}),
+        min_value=0
+    )
 
     class Meta:
         model = InterviewExperience
-        fields = ['company','role', 'experience_text', 'rating', 'job_type', 'difficulty', ]
+        fields = [
+            'company', 'role', 'type', 'question', 'job_type',
+            'experience_text', 'rating', 'difficulty', 'offer', 'credits_required',
+            'credits_amount'
+        ]
 
     def __init__(self, *args, **kwargs):
-        company = kwargs.pop('company', None)  # Capture the company instance
+        company = kwargs.pop('company', None)  # Capture the company instance if provided
         super().__init__(*args, **kwargs)
         if company:
             self.fields['company'].queryset = Company.objects.filter(pk=company.pk)
             self.fields['company'].initial = company
-            
             self.fields['company'].disabled = True
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comments

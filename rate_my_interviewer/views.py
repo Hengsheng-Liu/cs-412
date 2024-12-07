@@ -4,11 +4,14 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .models import Comments, Company, RMIProfile,User, Role, InterviewExperience
+from .models import CheckIn, Comments, Company, RMIProfile, Unlock,User, Role, InterviewExperience
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView, View,TemplateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.timezone import now
+from django.shortcuts import redirect
+
 import plotly
 import plotly.graph_objs as go
 from .forms import CommentForm, CreateUserForm, InterviewExperienceForm,CompanyComparisonForm
@@ -156,6 +159,8 @@ class AddInterviewExperienceView(CreateView):
         return reverse('company_detail', kwargs={'pk': self.kwargs['pk']})  # Redirect to the company detail page
     def form_valid(self, form):
         interview_experience = form.save(commit=False)
+        if not interview_experience.credits_amount:
+            interview_experience.credits_amount = 0
         interview_experience.company = Company.objects.get(company_id=self.kwargs['pk'])
         if self.request.user.is_authenticated:
             try:
@@ -178,10 +183,33 @@ class ReviewDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         review = self.get_object()
+        context['owner'] = review.user == RMIProfile.objects.get(user=self.request.user)
+        context['unlocked'] = Unlock.objects.filter(user=RMIProfile.objects.get(user=self.request.user), experience=review).exists()
         context['review'] = review
+        context['requred_credits'] = self.get_object().credits_required
         context['comments'] = Comments.objects.filter(experience=review)
         return context
+class UnlockInteriewQuestionView(LoginRequiredMixin, View):
 
+    def post(self, request, *args, **kwargs):
+        user_profile = RMIProfile.objects.get(user=self.request.user)
+        other_user = RMIProfile.objects.get(unique_id=self.kwargs['owner'])
+        credits_amount = self.kwargs['credits']
+        if user_profile.credits < credits_amount:
+            return redirect('not_enough_credits')
+        newUnlock = Unlock(
+            user=user_profile,
+            experience=InterviewExperience.objects.get(experience_id=self.kwargs['experience'])
+        )
+        newUnlock.save()
+        user_profile.credits -= credits_amount
+        user_profile.save()
+        other_user.credits += credits_amount
+        other_user.save()
+        return redirect(reverse('review_detail', kwargs={'pk': self.kwargs['experience']}))
+class NotEnoughCreditsView(TemplateView):
+    model = InterviewExperience
+    template_name = 'rate_my_interviewer/not_enough_credits.html'
 class ModifyInterviewExperienceView(UpdateView):
     model = InterviewExperience
     form_class = InterviewExperienceForm
@@ -206,15 +234,10 @@ class DeleteInterviewExperienceView(DeleteView):
     def get_success_url(self):
         experience = self.get_object()
         return reverse('review_list') + f'?company={experience.company.company_id}' + f'&role={experience.role}' + f'&job_type={experience.job_type}'
-        
-
-
 class ReviewListView(ListView):
     model = InterviewExperience
     template_name = 'rate_my_interviewer/review_list.html'
     context_object_name = 'reviews'
-
-
     def get_queryset(self):
         company_id = self.request.GET.get('company')
         role = self.request.GET.get('role')
@@ -243,11 +266,11 @@ class signup_view(CreateView):
         return context
     def form_valid(self, form):
         user_form = UserCreationForm(self.request.POST)
-        print(user_form.errors)
-
         if user_form.is_valid():
             user = user_form.save()
             form.instance.user = user
+            form.instance.credits = 500
+            
             login(self.request, user)
             return super().form_valid(form)
         else:
@@ -258,19 +281,41 @@ class UserDetailsView(LoginRequiredMixin, DetailView):
     model = RMIProfile
     template_name = 'rate_my_interviewer/profile.html'
     context_object_name = 'user'
+    
     def get_object(self):
         try:
             return self.model.objects.get(user=self.request.user)  
         except RMIProfile.DoesNotExist:
             return None
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user_profile = self.get_object()
+        today = now().date()
+        
         if user_profile:
             context['comments'] = InterviewExperience.objects.filter(user=user_profile)
+            context['TodayCheckIn'] = CheckIn.objects.filter(user=user_profile, date=today).exists()
         else:
             context['comments'] = []
+            context['TodayCheckIn'] = False
+
+        context['profile'] = user_profile
         return context
+
+class UserCheckInView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        user_profile = RMIProfile.objects.get(user=self.request.user)
+
+        # Check if the user has already checked in today
+        today = now().date()
+        if not CheckIn.objects.filter(user=user_profile, date=today).exists():
+            CheckIn.objects.create(user=user_profile, date=today)
+            user_profile.credits += 50  # Increase credits
+            user_profile.save()
+
+        return redirect(reverse('profile'))
 class CommentCreateView(CreateView):
     model = Comments
     form_class = CommentForm
@@ -353,4 +398,3 @@ class CompanyComparisonView(View):
             })
 
         return render(request, self.template_name, context)
-

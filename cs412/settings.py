@@ -143,4 +143,5 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+LOGIN_URL = '/rate_my_interviewer/login/'
 

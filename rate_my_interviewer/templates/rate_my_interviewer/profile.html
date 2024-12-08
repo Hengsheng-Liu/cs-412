@@ -10,10 +10,9 @@
 </head>
 <body>
     <div class="container">
-        {% if profile %}
             <h1>User Details</h1>
-            <p><strong>Name:</strong> {{ profile.user.name }}</p>
-            <p><strong>Email:</strong> {{ profile.user.email }}</p>
+            <p><strong>Name:</strong> {{ profile.name }}</p>
+            <p><strong>Email:</strong> {{ profile.email }}</p>
             <p><strong>College:</strong> {{ profile.college }}</p>
             <p><strong>Credits:</strong> {{ profile.credits }}</p>
             
@@ -26,7 +25,7 @@
                 <p><strong>You have already checked in today.</strong></p>
             {% endif %}
             
-            <h2>Comments</h2>
+            <h2>Reviews</h2>
             <ul class="comments-list">
                 {% for comment in comments %}
                     <a href="{% url 'review_detail' comment.experience_id %}" class="comment-link">
@@ -37,12 +36,9 @@
                         </li>
                     </a>
                 {% empty %}
-                    <p class="no-comments">No comments yet.</p>
+                    <p class="no-comments">No reviews yet.</p>
                 {% endfor %}
             </ul>
-        {% else %}
-            <h1>Please create a profile</h1>
-        {% endif %}
         
         <a href="{% url 'main_page' %}" class="btn">Back to Home</a>
     </div>

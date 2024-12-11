@@ -2,33 +2,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {# Meta information for character encoding and responsive design #}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
+
+    {# Link to the external CSS file located in the static directory #}
     <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
+    {# Main container for the sign-up page #}
     <div class="container">
-    <h1>Sign Up</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {{ user_form.as_p }}
-        {% for field in form %}
-            {% for error in field.errors %}
-                <p style="color: red;">{{ error }}</p>
+        <h1>Sign Up</h1>
+
+        {# Sign-up form with CSRF protection #}
+        <form method="post">
+            {% csrf_token %}
+
+            {# Render the main form and user-specific form fields dynamically #}
+            {{ form.as_p }}
+            {{ user_form.as_p }}
+
+            {# Display field-specific validation errors for both forms #}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-        {% for field in user_form %}
-            {% for error in field.errors %}
-                <p style="color: red;">{{ error }}</p>
+            {% for field in user_form %}
+                {% for error in field.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-        <button type="submit" class="btn save-btn ">Sign Up</button>
-        <a href="{% url 'login' %}" class="btn btn-secondary">Log In</a>
-        <a href="{% url 'main_page' %}" class = "btn delete-btn">Cancel</a>
-    </form>
+
+            {# Submit button to register the user #}
+            <button type="submit" class="btn save-btn">Sign Up</button>
+
+            {# Links for login and cancel actions #}
+            <a href="{% url 'login' %}" class="btn btn-secondary">Log In</a>
+            <a href="{% url 'main_page' %}" class="btn delete-btn">Cancel</a>
+        </form>
     </div>
-    
 </body>
 </html>

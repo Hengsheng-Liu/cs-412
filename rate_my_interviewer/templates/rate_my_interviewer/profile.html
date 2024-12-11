@@ -1,45 +1,56 @@
+{# Load the static template tag to use static file URLs in the template #}
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {# Meta information for character encoding and responsive design #}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
+
+    {# Link to the external CSS file located in the static directory #}
     <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
+    {# Main container for the user profile page #}
     <div class="container">
-            <h1>User Details</h1>
-            <p><strong>Name:</strong> {{ profile.name }}</p>
-            <p><strong>Email:</strong> {{ profile.email }}</p>
-            <p><strong>College:</strong> {{ profile.college }}</p>
-            <p><strong>Credits:</strong> {{ profile.credits }}</p>
-            
-            {% if not TodayCheckIn %}
-                <form action="{% url 'CheckIn' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn">Check In</button>
-                </form>
-            {% else %}
-                <p><strong>You have already checked in today.</strong></p>
-            {% endif %}
-            
-            <h2>Reviews</h2>
-            <ul class="comments-list">
-                {% for comment in comments %}
-                    <a href="{% url 'review_detail' comment.experience_id %}" class="comment-link">
-                        <li class="comment-item">
-                            <p><strong>Company:</strong> {{ comment.company }}</p>
-                            <p><strong>Role:</strong> {{ comment.role }}</p>
-                            <p>{{ comment.experience_text }}</p>
-                        </li>
-                    </a>
-                {% empty %}
-                    <p class="no-comments">No reviews yet.</p>
-                {% endfor %}
-            </ul>
-        
+        {# User profile details #}
+        <h1>User Details</h1>
+        <p><strong>Name:</strong> {{ profile.name }}</p>
+        <p><strong>Email:</strong> {{ profile.email }}</p>
+        <p><strong>College:</strong> {{ profile.college }}</p>
+        <p><strong>Credits:</strong> {{ profile.credits }}</p>
+
+        {# Check-in button, displayed only if the user has not checked in today #}
+        {% if not TodayCheckIn %}
+            <form action="{% url 'CheckIn' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn">Check In</button>
+            </form>
+        {% else %}
+            <p><strong>You have already checked in today.</strong></p>
+        {% endif %}
+
+        {# Section for user reviews #}
+        <h2>Reviews</h2>
+        <ul class="comments-list">
+            {% for comment in comments %}
+                {# Link to the detailed review page for each review #}
+                <a href="{% url 'review_detail' comment.experience_id %}" class="comment-link">
+                    <li class="comment-item">
+                        <p><strong>Company:</strong> {{ comment.company }}</p>
+                        <p><strong>Role:</strong> {{ comment.role }}</p>
+                        <p>{{ comment.experience_text }}</p>
+                    </li>
+                </a>
+            {% empty %}
+                {# Message displayed if there are no reviews #}
+                <p class="no-comments">No reviews yet.</p>
+            {% endfor %}
+        </ul>
+
+        {# Link to navigate back to the main page #}
         <a href="{% url 'main_page' %}" class="btn">Back to Home</a>
     </div>
 </body>

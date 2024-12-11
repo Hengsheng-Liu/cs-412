@@ -1,33 +1,48 @@
-{%load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {# Meta information for character encoding and responsive design #}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reviews for Role</title>
+
+    {# Link to the external CSS file located in the static directory #}
     <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
+    {# Main container for the reviews list #}
     <div class="container">
+        {# Heading for reviews based on company, role, and job type #}
         <h1>Reviews for {{ company.name }} - {{ role }} - {{ job_type }}</h1>
+
+        {# List of reviews #}
         <ul class="reviews-list">
             {% for review in reviews %}
-                <a href = "{% url 'review_detail' review.experience_id %}" class = "comment-link">
+                {# Link to the detailed review page for each review #}
+                <a href="{% url 'review_detail' review.experience_id %}" class="comment-link">
                     <li class="review-item">
+                        {# Display user if available #}
                         {% if review.user %}
                             <p class="review-user"><strong>User:</strong> {{ review.user }}</p>
                         {% endif %}
+                        {# Display the main review text #}
                         <p class="review-text">{{ review.experience_text }}</p>
+                        {# Display review metadata such as rating, difficulty, and type #}
                         <p class="review-meta">
                             <strong>Rating:</strong> {{ review.rating }} | 
                             <strong>Difficulty:</strong> {{ review.difficulty }} |
-                            <strong>Type:</strong> {{review.type}}
+                            <strong>Type:</strong> {{ review.type }}
                         </p>
                     </li>
+                </a>
             {% empty %}
+                {# Message if no reviews are available #}
                 <li class="no-reviews">No reviews found for this role and company.</li>
             {% endfor %}
         </ul>
+
+        {# Action links for adding a review or navigating back to the company details #}
         <div class="action-links">
             <a class="btn btn-primary" href="{% url 'add_experience' company.company_id %}?role={{ role|urlencode }}&job_type={{ job_type|urlencode }}">
                 Add Review

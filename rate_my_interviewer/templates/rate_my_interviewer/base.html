@@ -1,21 +1,30 @@
+{# Load the static template tag to use static file URLs in the template #}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {# Meta information for character encoding and responsive design #}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Search</title>
+
+    {# Link to the external CSS file located in the static directory #}
     <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
+    {# Navigation bar at the top of the page #}
     <div class="navbar">
         <div class="navbar-left">
+            {# Link to the main page #}
             <a href="{% url 'main_page' %}">Rate My Interview</a>
         </div>
         <div class="navbar-right">
+            {# Display different options based on user authentication status #}
             {% if user.is_authenticated %}
                 <span>Welcome, {{ user.username }}!</span>
                 <a href="{% url 'profile' %}">My Profile</a>
+                {# Log out form with CSRF protection #}
                 <form method="post" action="{% url 'logout' %}" style="display: inline">
                     {% csrf_token %}
                     <button type="submit" class="logout-btn">Log Out</button>
@@ -23,19 +32,23 @@
             {% else %}
                 <a href="{% url 'login' %}">Log In</a>
                 <a href="{% url 'signup' %}">Sign Up</a>
-                <a href ="{% url 'comparison' %}">Compare</a>
+                <a href="{% url 'comparison' %}">Compare</a>
             {% endif %}
         </div>
     </div>
 
+    {# Main container for the page content #}
     <div class="container">
         <h1>Search for Companies</h1>
+
+        {# Search form for companies with industry and location filters #}
         <form method="get" action="{% url 'main_page' %}" class="search-form">
             <div class="form-group">
                 <input type="text" name="q" placeholder="Search for companies..." value="{{ query }}" class="form-input">
             </div>
         
             <div class="form-group form-group-inline">
+                {# Dropdown to filter by industry #}
                 <select name="industry" class="form-select">
                     <option value="">All Industries</option>
                     {% for industry in industries %}
@@ -43,6 +56,7 @@
                     {% endfor %}
                 </select>
                 
+                {# Dropdown to filter by location #}
                 <select name="location" class="form-select">
                     <option value="">All Locations</option>
                     {% for location in locations %}
@@ -51,11 +65,13 @@
                 </select>
             </div>
         
-            <div >
+            {# Submit button for the search form #}
+            <div>
                 <button type="submit" class="btn">Search</button>
             </div>
         </form>
 
+        {# Search results section #}
         <h2 class="search-title">Search Results</h2>
         <table class="search-results-table">
             <thead>
@@ -66,9 +82,11 @@
                 </tr>
             </thead>
             <tbody>
+                {# Loop through the companies and display each as a table row #}
                 {% for company in companies %}
                     <tr>
                         <td>
+                            {# Link to the company detail page #}
                             <a href="{% url 'company_detail' company.company_id %}" class="company-link">
                                 {{ company.name }}
                             </a>
@@ -77,6 +95,7 @@
                         <td>{{ company.location }}</td>
                     </tr>
                 {% empty %}
+                    {# Display a message when no companies are found #}
                     <tr>
                         <td colspan="3" class="no-results">No companies found.</td>
                     </tr>
@@ -84,7 +103,7 @@
             </tbody>
         </table>
 
-        <!-- Pagination Controls -->
+        {# Pagination controls for navigating through multiple pages of results #}
         <div class="pagination">
             {% if page_obj.has_previous %}
                 <a href="?q={{ query }}&page=1">First</a>

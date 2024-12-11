@@ -1,36 +1,49 @@
+{# Load the static template tag to use static file URLs in the template #}
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {# Meta information for character encoding and responsive design #}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ company.name }}</title>
+
+    {# Link to the external CSS file located in the static directory #}
     <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
+    {# Main container for the company details page #}
     <div class="container">
+        {# Company name heading #}
         <h1>{{ company.name }}</h1>
+
+        {# Company details displayed with strong labels #}
         <p><strong>Industry:</strong> {{ company.industry }}</p>
         <p><strong>Location:</strong> {{ company.location }}</p>
+
+        {# Link to view company statistics #}
         <a href="{% url 'company_stats' company.company_id %}" class="btn">View Company Statistics</a>
-    
-        
+
+        {# Search form for filtering roles within the company #}
         <form method="GET" action="">
             <input type="text" name="q" placeholder="Search for role..." value="{{ query }}">
             <button type="submit" class="btn">Search</button>
         </form>
-        
+
+        {# List of roles available at the company #}
         <ul class="roles-list">
             {% for role in roles %}
                 <li>
+                    {# Link to review list filtered by company and role #}
                     <a href="{% url 'review_list' %}?company={{ company.company_id }}&role={{ role.title }}&job_type={{ role.job_type }}">
                         {{ role.title }} - {{ role.job_type }}
                     </a>
                 </li>
             {% endfor %}
-            
         </ul>
+
+        {# Buttons for adding a review and navigating back to the companies page #}
         <a href="{% url 'add_experience' company.company_id %}" class="save-btn">Add Review</a>
         <a href="{% url 'main_page' %}" class="btn back-btn">Back to Companies</a>
     </div>

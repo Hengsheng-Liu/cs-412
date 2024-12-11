@@ -1,17 +1,24 @@
+{# Load the static template tag to use static file URLs in the template #}
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {# Meta information for character encoding and responsive design #}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review Details</title>
+
+    {# Link to the external CSS file located in the static directory #}
     <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
+    {# Main container for the review details page #}
     <div class="container">
+        {# Heading for the review details section #}
         <h1>Review Details</h1>
         <div class="review-details">
+            {# Display the details of the review #}
             <p><strong>Company:</strong> {{ review.company.name }}</p>
             <p><strong>Role:</strong> {{ review.role.title }}</p>
             <p><strong>Reviewer:</strong> {{ review.user.name }}</p>
@@ -20,41 +27,51 @@
             <p><strong>Rating:</strong> {{ review.rating }}</p>
             <p><strong>Difficulty:</strong> {{ review.difficulty }}</p>
             <p><strong>Date Shared:</strong> {{ review.date_shared }}</p>
+
+            {# Conditional block for handling unlocked and locked questions #}
             {% if not owner and not unlocked and requred_credits %}
                 {% if user.is_authenticated %}
-                <p><strong>Question: </strong> <strong>{{ review.credits_amount }}</strong> Credits Required</p>
-                <form action="{% url 'unlock_review' owner=review.user.unique_id credits=review.credits_amount experience=review.experience_id %}" method = "post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn unlock-btn">Unlock Question</button>
-                </form>
+                    <p><strong>Question:</strong> <strong>{{ review.credits_amount }}</strong> Credits Required</p>
+                    <form action="{% url 'unlock_review' owner=review.user.unique_id credits=review.credits_amount experience=review.experience_id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn unlock-btn">Unlock Question</button>
+                    </form>
                 {% else %}
-                <p><strong>Question: </strong>NO ACCOUNT NO QUESTION</p>
+                    <p><strong>Question:</strong> NO ACCOUNT NO QUESTION</p>
                 {% endif %}
             {% else %}
-            <p><strong>Question: </strong>{{ review.question }}</p>
+                <p><strong>Question:</strong> {{ review.question }}</p>
             {% endif %}
         </div>
+
+        {# Conditional block for authenticated users to edit or delete their review #}
         {% if user.is_authenticated and user.id == review.user.user.id %}
-        <div>
-            <a href="{% url 'modify_experience' pk=review.experience_id %}" class="btn save-btn">Edit Review</a>
-            <a href="{% url 'delete_experience' pk=review.experience_id %}" class="btn delete-btn">Delete Review</a>
-        </div>
+            <div>
+                <a href="{% url 'modify_experience' pk=review.experience_id %}" class="btn save-btn">Edit Review</a>
+                <a href="{% url 'delete_experience' pk=review.experience_id %}" class="btn delete-btn">Delete Review</a>
+            </div>
         {% endif %}
+
+        {# Section to display comments on the review #}
         <h2>Comments</h2>
         <ul class="comments-list">
             {% for comment in comments %}
-            <li>
-                <p>{{ comment.user.name }}</p>
-                <p><strong>Comments: </strong> {{ comment.text }}</p>
-                <p><strong>Date Shared:</strong> {{ comment.date_shared }}</p>
-            </li>
+                <li>
+                    <p>{{ comment.user.name }}</p>
+                    <p><strong>Comments:</strong> {{ comment.text }}</p>
+                    <p><strong>Date Shared:</strong> {{ comment.date_shared }}</p>
+                </li>
             {% endfor %}
         </ul>
+
+        {# Option for authenticated users to add a comment if they are not the reviewer #}
         <div>
-            {% if user.is_authenticated and user.id != review.user.user.id%}
-            <a href="{% url 'add_comment' review.experience_id %}" class="btn save-btn">Add Comment</a>
+            {% if user.is_authenticated and user.id != review.user.user.id %}
+                <a href="{% url 'add_comment' review.experience_id %}" class="btn save-btn">Add Comment</a>
             {% endif %}
         </div>
+
+        {# Navigation link back to the company detail page #}
         <a href="{% url 'company_detail' review.company.pk %}" class="btn back-btn">Back to Company</a>
     </div>
 </body>

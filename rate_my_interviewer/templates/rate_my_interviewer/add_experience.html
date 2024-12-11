@@ -1,21 +1,36 @@
+{# Load the static template tag to use static file URLs in the template #}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {# Meta information for character encoding and responsive design #}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Interview Experience</title>
+
+    {# Link to the external CSS file located in the static directory #}
     <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
+    {# Main container for the page content #}
     <div class="container">
+        {# Heading dynamically displaying the company's name #}
         <h1>Add Interview Experience for {{ company.name }}</h1>
-        <form method="post" class="experience-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn save-btn ">Submit</button>
-            <a href="{% url 'company_detail' company.company_id %}" class="btn btn-secondary">Cancel</a>
 
+        {# Form for adding an interview experience with a POST method #}
+        <form method="post" class="experience-form">
+            {# CSRF token for security to prevent cross-site request forgery #}
+            {% csrf_token %}
+
+            {# Render the form fields dynamically as paragraphs #}
+            {{ form.as_p }}
+
+            {# Submit button to save the new interview experience #}
+            <button type="submit" class="btn save-btn">Submit</button>
+
+            {# Cancel button redirects to the company detail page #}
+            <a href="{% url 'company_detail' company.company_id %}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </body>

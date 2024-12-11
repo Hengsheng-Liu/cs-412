@@ -1,28 +1,41 @@
+{# Load the static template tag to use static file URLs in the template #}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {# Meta information for character encoding and responsive design #}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Statistics - {{ company.name }}</title>
+
+    {# Link to the external CSS file located in the static directory #}
     <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
+    {# Main container for the company statistics page #}
     <div class="container">
+        {# Display the company name and details #}
         <h1>{{ company.name }}</h1>
         <p><strong>Industry:</strong> {{ company.industry }}</p>
         <p><strong>Location:</strong> {{ company.location }}</p>
 
+        {# Section for average ratings and difficulty analysis #}
         <h2>Average Ratings and Difficulty by Role</h2>
+
+        {# Display the ratings plot dynamically passed from the backend #}
         <div>
             <h3>Ratings Plot</h3>
             {{ rating_plot|safe }}
         </div>
 
+        {# Display the difficulty plot dynamically passed from the backend #}
         <div>
             <h3>Difficulty Plot</h3>
             {{ difficulty_plot|safe }}
         </div>
+
+        {# Navigation link back to the company detail page #}
         <a href="{% url 'company_detail' company.pk %}" class="btn back-btn">Back to Company</a>
     </div>
 </body>

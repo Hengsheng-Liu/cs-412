@@ -1,21 +1,36 @@
+{# Load the static template tag to use static file URLs in the template #}
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {# Meta information for the document, including character encoding and responsive design #}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review Details</title>
+
+    {# Link to the CSS file located in the static directory #}
     <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
+    {# Main container for the page content #}
     <div class="container">
         <h1>Add Comment</h1>
+
+        {# Form for submitting comments with a POST method #}
         <form method="post" class="experience-form">
+            {# CSRF token for security to prevent cross-site request forgery #}
             {% csrf_token %}
+
+            {# Render the form fields dynamically as paragraphs #}
             {{ form.as_p }}
-            <button type="submit" class="btn save-btn ">Submit</button>
+
+            {# Submit button to save the comment #}
+            <button type="submit" class="btn save-btn">Submit</button>
+
+            {# Cancel button redirects to the review details page #}
             <a href="{% url 'review_detail' experience.experience_id %}" class="btn btn-secondary">Cancel</a>
+        </form>
     </div>
 </body>
 </html>

@@ -1,19 +1,36 @@
+{# Load the static template tag to use static file URLs in the template #}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {# Meta information for character encoding and responsive design #}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 
+    {# Link to the external CSS file located in the static directory #}
+    <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
-<div class="container">
-  <h1>Login</h1>
-  <form method="post" >
-    {% csrf_token %} {{ form.as_p }}
-    <button type="submit" class="btn save-btn ">Login</button>
-    <input type="hidden" name="next" value="{% url 'profile' %}" />
-    <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a>
-  </form>
-</div>
+<body>
+    {# Main container for the login page #}
+    <div class="container">
+        {# Heading for the login page #}
+        <h1>Login</h1>
+
+        {# Login form with CSRF protection and dynamic form rendering #}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            {# Submit button for logging in #}
+            <button type="submit" class="btn save-btn">Login</button>
+
+            {# Hidden input to redirect the user to their profile page after login #}
+            <input type="hidden" name="next" value="{% url 'profile' %}" />
+
+            {# Link to the signup page for new users #}
+            <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,25 +1,34 @@
+{# Load the static template tag to use static file URLs in the template #}
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {# Meta information for character encoding and responsive design #}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ company.name }}</title>
+
+    {# Link to the external CSS file located in the static directory #}
     <link rel="stylesheet" href="{% static 'rate_my_interviewer/styles.css' %}">
 </head>
 <body>
+    {# Main container for the comparison page #}
     <div class="container">
+        {# Heading for the comparison page #}
         <h1>Compare Companies</h1>
 
+        {# Form to select companies to compare #}
         <form method="get">
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Compare</button>
         </form>
-        
+
+        {# Conditional block to display comparison results if both companies are selected #}
         {% if company1 and company2 %}
             <h2>{{ company1.name }} vs {{ company2.name }}</h2>
         
+            {# Section for ratings comparison with a dynamic plot #}
             <div>
                 <h3>Ratings Comparison</h3>
                 <div>
@@ -27,6 +36,7 @@
                 </div>
             </div>
         
+            {# Section for difficulties comparison with a dynamic plot #}
             <div>
                 <h3>Difficulties Comparison</h3>
                 <div>
@@ -34,6 +44,8 @@
                 </div>
             </div>
         {% endif %}
+
+        {# Navigation link back to the main companies page #}
         <a href="{% url 'main_page' %}" class="btn back-btn">Back to Companies</a>
     </div>
 </body>
